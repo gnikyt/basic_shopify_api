@@ -1,5 +1,5 @@
 from httpx import Client as HttpxClient, AsyncClient as AsyncHttpxClient
-from httpx._types import HeaderTypes, QueryParamTypes, PrimitiveData
+from httpx._types import HeaderTypes, QueryParamTypes, PrimitiveData, RequestData
 from httpx._models import Response
 from typing import Pattern, Dict, Tuple, Union, Awaitable
 from time import sleep
@@ -9,6 +9,7 @@ from .options import Options
 import datetime
 
 DataDict = Dict[str, PrimitiveData]
+UnionRequestData = Union[QueryParamTypes, RequestData]
 
 class ApiCommon:
   ONE_SECOND = 1000
@@ -30,6 +31,28 @@ class ApiCommon:
       or self.options.version in path
     )
     return path if ignore_versioning else replace_path()
+
+  def _build_headers(self, headers: HeaderTypes) -> HeaderTypes:
+    if self.options.is_private:
+      headers = {"x-shopify-access-token": self.session.password, **headers}
+    return {**self.options.headers, **headers}
+
+  def _build_request(
+    self,
+    method: str,
+    path: str,
+    params: UnionRequestData={},
+    headers: HeaderTypes={}
+  ) -> dict:
+    kwargs = {
+      "url": self.version_path(path),
+      "headers": self._build_headers(headers),
+    }
+    if method == "get":
+      kwargs["params"] = params
+    else:
+      kwargs["json"] = params
+    return kwargs
 
   def _rest_extract_link(self, headers: HeaderTypes) -> RestLink:
     link = {}
@@ -55,6 +78,7 @@ class ApiCommon:
 
       if current_time < window_time:
         deferrer.sleep(window_time - current_time)
+
     time_store.append(self.session, deferrer.current_time())
   
   def _cost_rate_limit(self) -> None:
@@ -114,27 +138,29 @@ class ApiCommon:
   
   def _rest_post_actions(self, response: Response) -> RestResult:
     (body, errors) = self._parse_response(response)
-    [meth(self, response, body, errors) for meth in self.options.rest_post_actions]
-
-    return RestResult(
+    result = RestResult(
       response=response,
       status=response.status_code,
       body=body,
       errors=errors,
       link=self._rest_extract_link(response.headers),
     )
+
+    [meth(self, result) for meth in self.options.rest_post_actions]
+    return result
   
   def _graphql_post_actions(self, response: Response) -> ApiResult:
     (body, errors) = self._parse_response(response)
     self._cost_update(body)
-    [meth(self, response, body, errors) for meth in self.options.graphql_post_actions]
-
-    return ApiResult(
+    result = ApiResult(
       response=response,
       status=response.status_code,
       body=body,
       errors=errors,
     )
+
+    [meth(self, result) for meth in self.options.graphql_post_actions]
+    return result
 
 class Client(HttpxClient, ApiCommon):
   def __init__(
@@ -157,8 +183,8 @@ class Client(HttpxClient, ApiCommon):
       retries: int = kwargs.get("retries", 0)
       result: ApiResult = meth(*args, **kwargs)
       response: Response = result.response
-
       retry = inst._retry_required(response, retries)
+
       if retry is not False:
         inst.options.deferrer.sleep(retry)
         return inst.rest(*args[1:], **kwargs, retries=retries + 1)
@@ -166,26 +192,32 @@ class Client(HttpxClient, ApiCommon):
     return wrapper
 
   @_retry_request
-  def rest(self, method: str, path: str, params: QueryParamTypes=None, headers: HeaderTypes={}, retries: int=0) -> RestResult:
+  def rest(
+    self,
+    method: str,
+    path: str,
+    params: UnionRequestData=None,
+    headers: HeaderTypes={},
+    retries: int=0
+  ) -> RestResult:
     self._rest_pre_actions()
+    kwargs = self._build_request(method, path, params, headers)
     meth = getattr(self, method)
-    response = meth(
-      url=self.version_path(path),
-      headers={**self.options.headers, **headers},
-      params=params,
-    )
+    response = meth(**kwargs)
     return self._rest_post_actions(response)
 
   @_retry_request
   def graphql(self, query: str, variables: DataDict=None) -> ApiResult:
     self._graphql_pre_actions()
-    response = self.post(
-      url=self.version_path("/admin/api/graphql.json", True),
-      json={
+    kwargs = self._build_request(
+      "post",
+      "/admin/api/graphql.json",
+      {
         "query": query,
         "variables": variables,
-      }
+      },
     )
+    response = self.post(**kwargs)
     return self._graphql_post_actions(response)
 
 class AsyncClient(AsyncHttpxClient, ApiCommon):
@@ -209,8 +241,8 @@ class AsyncClient(AsyncHttpxClient, ApiCommon):
       retries = kwargs.get("retries", 0)
       result: ApiResult = await meth(*args, **kwargs)
       response = result.response
-
       retry = inst._retry_required(response, retries)
+
       if retry is not False:
         await inst.options.deferrer.asleep(retry)
         return inst.rest(*args[1:], **kwargs, retries=retries + 1)
@@ -218,24 +250,30 @@ class AsyncClient(AsyncHttpxClient, ApiCommon):
     return wrapper
 
   @_retry_request
-  async def rest(self, method: str, path: str, params: QueryParamTypes=None, headers: HeaderTypes={}, retries: int=0) -> RestResult:
+  async def rest(
+    self,
+    method: str,
+    path: str,
+    params: QueryParamTypes=None,
+    headers: HeaderTypes={},
+    retries: int=0
+  ) -> RestResult:
     self._rest_pre_actions()
+    kwargs = self._build_request(method, path, params, headers)
     meth = getattr(self, method)
-    response = await meth(
-      url=self.version_path(path),
-      headers={**self.options.headers, **headers},
-      params=params,
-    )
+    response = await meth(**kwargs)
     return self._rest_post_actions(response)
 
   @_retry_request
   async def graphql(self, query: str, variables: DataDict=None) -> ApiResult:
     self._graphql_pre_actions()
-    response = await self.post(
-      url=self.version_path("/admin/api/graphql.json", True),
-      json={
+    kwargs = self._build_request(
+      "post",
+      "/admin/api/graphql.json",
+      {
         "query": query,
         "variables": variables,
-      }
+      },
     )
+    response = await self.post(**kwargs)
     return self._graphql_post_actions(response)
