@@ -4,11 +4,13 @@ This library extends HTTPX and implements a read-to-use client for REST and Grap
 
 Support for:
 
++ Sync and async API calls
 + REST API
 + GraphQL API
 + REST rate limiting
 + GraphQL cost limiting
 + Automatic retries of failed requests
++ Pre/post action support
 
 ## TODO
 

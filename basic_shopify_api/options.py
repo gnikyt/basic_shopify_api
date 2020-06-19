@@ -30,6 +30,10 @@ class Options(object):
     self.deferrer = SleepDeferrer()
     self.rest_limit = 2
     self.graphql_limit = 50
+    self.rest_pre_actions = []
+    self.rest_post_actions = []
+    self.graphql_pre_actions = []
+    self.graphql_post_actions = []
     self._version = self.DEFAULT_VERSION
     self._type = self.DEFAULT_TYPE
   

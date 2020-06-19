@@ -1,5 +1,6 @@
+import time
+import asyncio
 from abc import ABCMeta, abstractmethod
-from time import time, sleep
 
 class Deferrer(metaclass=ABCMeta):
   """
@@ -12,12 +13,22 @@ class Deferrer(metaclass=ABCMeta):
     Returns:
       Time in milliseconds.
     """
-    return int(round(time() * 1000))
+    return int(round(time.time() * 1000))
 
   @abstractmethod
-  def sleep(self, length: int) -> None:
+  def sleep(self, length: float) -> None:
     """
-    Sleep implementation.
+    Sleep implementation (sync).
+
+    Args:
+      length: The length of time to sleep in milliseconds.
+    """
+    pass
+
+  @abstractmethod
+  def asleep(self, length: float) -> None:
+    """
+    Sleep implementation (async).
 
     Args:
       length: The length of time to sleep in milliseconds.
@@ -25,5 +36,8 @@ class Deferrer(metaclass=ABCMeta):
     pass
 
 class SleepDeferrer(Deferrer):
-  def sleep(self, length: int) -> None:
-    sleep(length / 1000)
+  def sleep(self, length: float) -> None:
+    sleep(length / 1000.0)
+
+  async def asleep(self, length: float) -> None:
+    asyncio.sleep(length / 1000.0)
