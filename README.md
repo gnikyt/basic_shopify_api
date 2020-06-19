@@ -80,10 +80,10 @@ session = Session(domain="john-doe.myshopify.com", key="abc", password="123")
 
 `rest(method, path[, params, headers])`.
 
-+ `method` being one of `get`, `post`, `put`, or `delete`.
-+ `path` being an API path, example: `/admin/api/shop.json`.
-+ `params` (optional) being a dict of query or json data.
-+ `headers` (optional) being a dict of additional headers to pass with the request.
++ `method` (str), being one of `get`, `post`, `put`, or `delete`.
++ `path` (str), being an API path, example: `/admin/api/shop.json`.
++ `params` (dict) (optional), being a dict of query or json data.
++ `headers` (dict) (optional), being a dict of additional headers to pass with the request.
 
 ### Sync
 
@@ -119,6 +119,58 @@ from basic_shopify_api import AsyncClient
 
 async with AsyncClient(sess, opts) as client:
   shop = await client.rest("get", "/admin/api/shop.json", {"fields": "name,email"}})
+  print(shop.response)
+  print(shop.body["name"])
+  # returns the following:
+  # RestResult(
+  #   response=The HTTPX response object,
+  #   body=A dict of JSON response,
+  #   errors=A dict of error response or None for no errors,
+  #   status=The HTTP status code,
+  #   link=A RestLink object of next/previous pagination info
+  # )
+```
+
+## GraphQL Usage
+
+`graphql(query[, variables])`.
+
++ `query` (str), being the GraphQL query string.
++ `variables` (dict) (optional), being the variables for your query or mutation.
+
+### Sync
+
+Example:
+
+```python
+from basic_shopify_api import Client
+
+# ...
+
+with Client(sess, opts) as client:
+  shop = client.graphql("{ shop { name } }")
+  print(shop.response)
+  print(shop.body["shop"]["name"])
+  # returns the following:
+  # RestResult(
+  #   response=The HTTPX response object,
+  #   body=A dict of JSON response,
+  #   errors=A dict of error response or None for no errors,
+  #   status=The HTTP status code,
+  # )
+```
+
+### Async
+
+Example:
+
+```python
+from basic_shopify_api import AsyncClient
+
+# ...
+
+async with AsyncClient(sess, opts) as client:
+  shop = await client.graphql("{ shop { name } }")
   print(shop.response)
   print(shop.body["name"])
   # returns the following:

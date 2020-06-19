@@ -107,12 +107,14 @@ class ApiCommon:
       return
 
     cost_store = self.options.cost_store
-    cost_store.append(self.session, int(body["extensions"]["cost"]["actualCost"]))
+    cost_store.append(self.session, int(body["extensions"]["cost"]["actualQueryCost"]))
 
   def _parse_response(self, response: Response) -> Tuple:
     errors = None
     try:
       body = response.json()
+      if "data" in body:
+        body = body["data"]
       if "errors" in body:
         errors = body["errors"]
       elif "error" in body:
