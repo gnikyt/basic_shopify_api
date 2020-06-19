@@ -136,7 +136,7 @@ async with AsyncClient(sess, opts) as client:
 To register a pre or post action for REST or GraphQL, simply append it to your options setup.
 
 ```python
-from basic_shopify_api import Options
+from basic_shopify_api import Options, Client
 
 def say_hello(inst):
   """inst is the current client instance, either Client or AsyncClient"""
@@ -150,7 +150,13 @@ def say_world(inst, result):
   print("world")
 
 opts = Options()
-# ...
 opts.rest_pre_actions = [say_hello]
 opts.rest_post_ations = [say_world]
+
+sess = Session(domain="john-doe.myshopify.com", key="abc", password="134")
+
+with Client(sess, opts) as client:
+  shop = client.rest("get", "/admin/api/shop.json")
+  print(shop)
+  # Output: "hello" "world" <ApiResult>
 ```
