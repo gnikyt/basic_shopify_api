@@ -1,3 +1,8 @@
 -e .
 
+# Requirements
 httpx>=0.13
+
+# Testing
+pytest
+pytest-cov
