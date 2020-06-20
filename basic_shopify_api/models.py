@@ -4,20 +4,27 @@ from httpx._models import Response
 from http import HTTPStatus
 
 
-@dataclass(frozen=True)
 class RestLink:
-    next: Optional[str]
-    prev: Optional[str]
+    def __init__(self, next: Optional[str], prev: Optional[str]):
+        self.next = next
+        self.prev = prev
 
 
-@dataclass(frozen=True)
 class ApiResult:
-    response: Response
-    status: HTTPStatus
-    body: Union[Dict[str, str], str]
-    errors: Optional[Union[Dict[str, str], str]]
+    def __int__(
+        self,
+        response: Response,
+        status: HTTPStatus,
+        body: Union[Dict[str, str], str],
+        errors: Optional[Union[Dict[str, str], str]],
+    ):
+        self.response = response
+        self.status = status,
+        self.body = body
+        self.errors = errors
 
 
-@dataclass(frozen=True)
 class RestResult(ApiResult):
-    link: RestLink
+    def __int__(self, link: RestLink, **kwargs):
+        super().__init__(**kwargs)
+        self.link = link
