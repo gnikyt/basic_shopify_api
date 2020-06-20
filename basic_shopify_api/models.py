@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import Union, Dict, Optional
 from httpx._models import Response
 from http import HTTPStatus
