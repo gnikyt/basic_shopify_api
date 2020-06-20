@@ -6,3 +6,4 @@ httpx>=0.13
 # Testing
 pytest
 pytest-cov
+flake8

@@ -1,4 +1,4 @@
-name: basic_shopify_api Test
+name: Package Test
 
 on: [push, pull_request]
 
