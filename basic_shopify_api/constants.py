@@ -1,0 +1,10 @@
+VERSION_PATTERN = r"([0-9]{4}-[0-9]{2})|unstable"
+NOT_AUTHABLE_PATTERN = r"\/oauth\/(authorize|access_token)"
+NOT_VERSIONABLE_PATTERN = r"\/(oauth\/access_scopes)"
+LINK_PATTERN = r"<.*page_info=([a-zA-Z0-9\-_]+).*>; rel=\"(next|previous)\""
+RETRY_HEADER = "retry-after"
+ACCESS_TOKEN_HEADER = "x-shopify-access-token"
+DEFAULT_VERSION = "2020-04"
+DEFAULT_MODE = "public"
+ALT_MODE = "private"
+ONE_SECOND = 1000

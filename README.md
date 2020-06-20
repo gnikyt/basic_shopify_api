@@ -40,14 +40,14 @@ Options available:
 + `graphql_pre_actions` (list), a list of pre-callable actions to fire before a GraphQL request.
 + `graphql_post_actions` (list), a list of post-callable actions to fire after a GraphQL request.
 + `version` (str), the API version to use for all requests; default: `2020-04`.
-+ `type` (str), the type of API to use either `public` or `private`; default: `public`.
++ `mode` (str), the type of API to use either `public` or `private`; default: `public`.
 
 Example:
 
 ```python
 opts = Options()
 opts.version = "unstable"
-opts.type = "private"
+opts.mode = "private"
 ```
 
 ## Session
