@@ -2,8 +2,7 @@ from httpx import Client as HttpxClient, AsyncClient as AsyncHttpxClient
 from httpx._types import HeaderTypes, QueryParamTypes
 from httpx._models import Response
 from typing import Pattern, Tuple, Union
-from .session import Session
-from .models import RestLink, RestResult, ApiResult
+from .models import Session, RestLink, RestResult, ApiResult
 from .options import Options
 from .constants import NOT_AUTHABLE_PATTERN, \
     NOT_VERSIONABLE_PATTERN, \
@@ -11,7 +10,7 @@ from .constants import NOT_AUTHABLE_PATTERN, \
     ACCESS_TOKEN_HEADER, \
     ONE_SECOND, \
     RETRY_HEADER
-from .types import DataDict, UnionRequestData
+from .types import UnionRequestData
 import re
 
 
@@ -224,7 +223,7 @@ class Client(HttpxClient, ApiCommon):
         return self._rest_post_actions(response)
 
     @_retry_request
-    def graphql(self, query: str, variables: DataDict = None) -> ApiResult:
+    def graphql(self, query: str, variables: dict = None) -> ApiResult:
         kwargs = self._build_request(
             "post",
             "/admin/api/graphql.json",
@@ -283,7 +282,7 @@ class AsyncClient(AsyncHttpxClient, ApiCommon):
         return self._rest_post_actions(response)
 
     @_retry_request
-    async def graphql(self, query: str, variables: DataDict = None) -> ApiResult:
+    async def graphql(self, query: str, variables: dict = None) -> ApiResult:
         kwargs = self._build_request(
             "post",
             "/admin/api/graphql.json",

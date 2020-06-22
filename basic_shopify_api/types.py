@@ -1,5 +1,4 @@
-from typing import Dict, Union
-from httpx._types import PrimitiveData, RequestData, QueryParamTypes
+from typing import Union
+from httpx._types import RequestData, QueryParamTypes
 
-DataDict = Dict[str, PrimitiveData]
 UnionRequestData = Union[QueryParamTypes, RequestData]

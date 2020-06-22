@@ -3,6 +3,14 @@ from httpx._models import Response
 from http import HTTPStatus
 
 
+class Session:
+    def __init__(self, domain: str = None, key: str = None, password: str = None, secret: str = None):
+        self.domain = domain
+        self.key = key
+        self.password = password
+        self.secret = secret
+
+
 class RestLink:
     def __init__(self, next: Optional[str], prev: Optional[str]):
         self.next = next

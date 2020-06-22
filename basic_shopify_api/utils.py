@@ -1,4 +1,3 @@
-from .types import DataDict
 from typing import Union
 import hashlib
 import hmac
@@ -6,7 +5,7 @@ import base64
 
 
 def create_hmac(
-    data: Union[DataDict, str],
+    data: Union[dict, str],
     raw: bool = False,
     build_query: bool = False,
     build_query_with_join: bool = False,
@@ -31,7 +30,7 @@ def create_hmac(
     return hmac_local
 
 
-def hmac_verify(params: DataDict) -> bool:
+def hmac_verify(params: dict) -> bool:
     if "hmac" not in params:
         return False
 

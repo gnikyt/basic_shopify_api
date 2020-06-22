@@ -1,4 +1,4 @@
-from .session import Session
+from .models import Session
 from abc import ABC, abstractmethod
 from typing import List, Dict
 
