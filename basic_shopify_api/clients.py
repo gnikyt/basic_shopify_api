@@ -188,7 +188,7 @@ class Client(HttpxClient, ApiCommon):
         self.session = session
         self.options = options
         super().__init__(
-            base_url=f"https://{self.session.domain}",
+            base_url=self.session.base_url,
             auth=None if self.options.is_public else (self.session.key, self.session.password),
             **kwargs
         )
@@ -247,7 +247,7 @@ class AsyncClient(AsyncHttpxClient, ApiCommon):
         self.session = session
         self.options = options
         super().__init__(
-            base_url=f"https://{self.session.domain}",
+            base_url=self.session.base_url,
             auth=None if self.options.is_public else (self.session.key, self.session.password),
             **kwargs
         )

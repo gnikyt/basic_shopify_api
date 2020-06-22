@@ -1,18 +1,19 @@
 from .models import Session
 from abc import ABC, abstractmethod
-from typing import List, Dict
+from typing import List
+from .types import StoreValue, StoreContainer
 
 
 class StateStore(ABC):
     def __init__(self):
-        self.container: Dict[str, List[int]] = {}
+        self.container: StoreContainer = {}
 
     @abstractmethod
-    def all(self, session: Session) -> List[int]:
+    def all(self, session: Session) -> List[StoreValue]:
         pass
 
     @abstractmethod
-    def append(self, session: Session, value: int) -> None:
+    def append(self, session: Session, value: StoreValue) -> None:
         pass
 
     @abstractmethod
@@ -21,13 +22,13 @@ class StateStore(ABC):
 
 
 class TimeMemoryStore(StateStore):
-    def all(self, session: Session) -> List[int]:
+    def all(self, session: Session) -> List[StoreValue]:
         domain = session.domain
         if domain not in self.container:
             self.reset(session)
         return self.container[domain]
 
-    def append(self, session: Session, value: int) -> None:
+    def append(self, session: Session, value: StoreValue) -> None:
         domain = session.domain
         if domain not in self.container:
             self.reset(session)
@@ -38,13 +39,13 @@ class TimeMemoryStore(StateStore):
 
 
 class CostMemoryStore(StateStore):
-    def all(self, session: Session) -> List[int]:
+    def all(self, session: Session) -> List[StoreValue]:
         domain = session.domain
         if domain not in self.container:
             self.reset(session)
         return self.container[domain]
 
-    def append(self, session: Session, value: int) -> None:
+    def append(self, session: Session, value: StoreValue) -> None:
         domain = session.domain
         if domain not in self.container:
             self.reset(session)

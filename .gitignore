@@ -1,7 +1,7 @@
-__pycache__/
-env
-test.py
 *.pyc
-.pytest_cache/
-htmlcov/
-.coverage
+__pycache__
+/env
+/test.py
+/.pytest_cache
+/htmlcov
+/.coverage

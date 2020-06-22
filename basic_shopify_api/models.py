@@ -1,3 +1,4 @@
+from os import environ
 from typing import Union, Dict, Optional
 from httpx._models import Response
 from http import HTTPStatus
@@ -10,6 +11,10 @@ class Session:
         self.password = password
         self.secret = secret
 
+    @property
+    def base_url(self) -> str:
+        return f"https://{self.domain}"
+
 
 class RestLink:
     def __init__(self, next: Optional[str], prev: Optional[str]):
@@ -18,7 +23,7 @@ class RestLink:
 
 
 class ApiResult:
-    def __int__(
+    def __init__(
         self,
         response: Response,
         status: HTTPStatus,
@@ -32,6 +37,6 @@ class ApiResult:
 
 
 class RestResult(ApiResult):
-    def __int__(self, link: RestLink, **kwargs):
+    def __init__(self, link: RestLink, **kwargs):
         super().__init__(**kwargs)
         self.link = link

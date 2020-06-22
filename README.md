@@ -16,11 +16,6 @@ Support for:
 + Automatic retries of failed requests
 + Pre/post action support
 
-## TODO
-
-+ Finish README
-+ Implement tests
-
 ## Options
 
 `Options()`.
@@ -216,3 +211,15 @@ with Client(sess, opts) as client:
   print(shop)
   # Output: "hello" "world" <ApiResult>
 ```
+
+## Testing
+
+`pytest --cov=basic_shopify_api`
+
+For HTML coverage output:
+
+`pytest --cov=basic_shopify_api --cov-report=html`
+
+## LICENSE
+
+This project is released under the MIT [license](https://github.com/osiset/basic_shopify_api/blob/master/LICENSE).
