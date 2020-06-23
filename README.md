@@ -16,6 +16,21 @@ Support for:
 + Automatic retries of failed requests
 + Pre/post action support
 
+## Table of Contents
+  * [Installation](#installation)
+  * [Options Setup](#options)
+  * [Session Setup](#session)
+  * [REST Usage](#rest-usage)
+  * [GraphQL Usage](#graphql-usage)
+  * [Testing](#testing)
+  * [License](#license)
+
+## Installation
+
+*Note: currently not published.*
+
+`pip install basic_shopify_api`
+
 ## Options
 
 `Options()`.
@@ -214,12 +229,8 @@ with Client(sess, opts) as client:
 
 ## Testing
 
-`pytest --cov=basic_shopify_api`
+`pytest`
 
-For HTML coverage output:
-
-`pytest --cov=basic_shopify_api --cov-report=html`
-
-## LICENSE
+## License
 
 This project is released under the MIT [license](https://github.com/osiset/basic_shopify_api/blob/master/LICENSE).
