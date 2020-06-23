@@ -24,7 +24,7 @@ class Deferrer(metaclass=ABCMeta):
         Args:
             length: The length of time to sleep in milliseconds.
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def asleep(self, length: float) -> None:
@@ -34,7 +34,7 @@ class Deferrer(metaclass=ABCMeta):
         Args:
             length: The length of time to sleep in milliseconds.
         """
-        pass
+        pass  # pragma: no cover
 
 
 class SleepDeferrer(Deferrer):

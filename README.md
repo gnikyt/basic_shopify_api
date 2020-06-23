@@ -113,13 +113,15 @@ with Client(sess, opts) as client:
   shop = client.rest("get", "/admin/api/shop.json", {"fields": "name,email"}})
   print(shop.response)
   print(shop.body["name"])
+
   # returns the following:
   # RestResult(
   #   response=The HTTPX response object,
   #   body=A dict of JSON response,
   #   errors=A dict of error response or None for no errors,
   #   status=The HTTP status code,
-  #   link=A RestLink object of next/previous pagination info
+  #   link=A RestLink object of next/previous pagination info,
+  #   retries=Number of retires for the request
   # )
 ```
 
@@ -136,13 +138,15 @@ async with AsyncClient(sess, opts) as client:
   shop = await client.rest("get", "/admin/api/shop.json", {"fields": "name,email"}})
   print(shop.response)
   print(shop.body["name"])
+
   # returns the following:
   # RestResult(
   #   response=The HTTPX response object,
   #   body=A dict of JSON response,
   #   errors=A dict of error response or None for no errors,
   #   status=The HTTP status code,
-  #   link=A RestLink object of next/previous pagination info
+  #   link=A RestLink object of next/previous pagination info,
+  #   retries=Number of retires for the request
   # )
 ```
 
@@ -166,12 +170,15 @@ with Client(sess, opts) as client:
   shop = client.graphql("{ shop { name } }")
   print(shop.response)
   print(shop.body["shop"]["name"])
+
   # returns the following:
   # RestResult(
   #   response=The HTTPX response object,
   #   body=A dict of JSON response,
   #   errors=A dict of error response or None for no errors,
   #   status=The HTTP status code,
+  #   retries=Number of retires for the request,
+  #   retries=Number of retires for the request
   # )
 ```
 
@@ -188,13 +195,15 @@ async with AsyncClient(sess, opts) as client:
   shop = await client.graphql("{ shop { name } }")
   print(shop.response)
   print(shop.body["name"])
+
   # returns the following:
   # RestResult(
   #   response=The HTTPX response object,
   #   body=A dict of JSON response,
   #   errors=A dict of error response or None for no errors,
   #   status=The HTTP status code,
-  #   link=A RestLink object of next/previous pagination info
+  #   link=A RestLink object of next/previous pagination info,
+  #   retries=Number of retires for the request
   # )
 ```
 

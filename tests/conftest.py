@@ -1,14 +1,18 @@
 import pytest
 import os
+from http import HTTPStatus
 from multiprocessing import Process
 from wsgiref.simple_server import make_server
+from basic_shopify_api.constants import RETRY_HEADER
 
 
 def local_server_app(environ, start_response):
     method = environ["REQUEST_METHOD"].lower()
     path = environ["PATH_INFO"].split("/")[-1]
-    status = "200 OK"
+    status = environ.get("HTTP_X_TEST_STATUS", f"{HTTPStatus.OK.value} {HTTPStatus.OK.description}")
     headers = [("Content-Type", "application/json")]
+    if "HTTP_X_TEST_RETRY" in environ:
+        headers.append((RETRY_HEADER, environ["HTTP_X_TEST_RETRY"]))
 
     with open(os.path.dirname(__file__) + f"/fixtures/{method}_{path}") as fixture:
         data = fixture.read().encode("utf-8")

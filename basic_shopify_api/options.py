@@ -9,10 +9,10 @@ class Options(object):
     def __init__(self):
         self.max_retries = 2
         self.retry_on_status = [
-            HTTPStatus.TOO_MANY_REQUESTS,
-            HTTPStatus.BAD_GATEWAY,
-            HTTPStatus.SERVICE_UNAVAILABLE,
-            HTTPStatus.GATEWAY_TIMEOUT,
+            HTTPStatus.TOO_MANY_REQUESTS.value,
+            HTTPStatus.BAD_GATEWAY.value,
+            HTTPStatus.SERVICE_UNAVAILABLE.value,
+            HTTPStatus.GATEWAY_TIMEOUT.value,
         ]
         self.headers = {
             "Content-Type": "application/json",

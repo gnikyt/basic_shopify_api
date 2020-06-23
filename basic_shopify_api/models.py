@@ -29,11 +29,13 @@ class ApiResult:
         status: HTTPStatus,
         body: Union[Dict[str, str], str],
         errors: Optional[Union[Dict[str, str], str]],
+        retries: int = 0,
     ):
         self.response = response
         self.status = status,
         self.body = body
         self.errors = errors
+        self.retries = retries
 
 
 class RestResult(ApiResult):

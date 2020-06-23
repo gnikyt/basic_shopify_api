@@ -141,6 +141,7 @@ class ApiCommon:
         if response.status_code in self.options.retry_on_status and retries < self.options.max_retries:
             if RETRY_HEADER in response.headers:
                 return float(response.headers[RETRY_HEADER]) * ONE_SECOND
+            return 0.0
         return False
 
     def _rest_pre_actions(self, **kwargs) -> None:
@@ -151,7 +152,7 @@ class ApiCommon:
         self._cost_rate_limit()
         [meth(self, **kwargs) for meth in self.options.graphql_pre_actions]
 
-    def _rest_post_actions(self, response: Response) -> RestResult:
+    def _rest_post_actions(self, response: Response, retries: int) -> RestResult:
         (body, errors) = self._parse_response(response)
         result = RestResult(
             response=response,
@@ -159,12 +160,13 @@ class ApiCommon:
             body=body,
             errors=errors,
             link=self._rest_extract_link(response.headers),
+            retries=retries,
         )
 
         [meth(self, result) for meth in self.options.rest_post_actions]
         return result
 
-    def _graphql_post_actions(self, response: Response) -> ApiResult:
+    def _graphql_post_actions(self, response: Response, retries: int) -> ApiResult:
         (body, errors) = self._parse_response(response)
         self._cost_update(body)
         result = ApiResult(
@@ -172,6 +174,7 @@ class ApiCommon:
             status=response.status_code,
             body=body,
             errors=errors,
+            retries=retries,
         )
 
         [meth(self, result) for meth in self.options.graphql_post_actions]
@@ -196,14 +199,17 @@ class Client(HttpxClient, ApiCommon):
     def _retry_request(meth: callable) -> callable:
         def wrapper(*args, **kwargs) -> ApiResult:
             inst: Client = args[0]
-            retries: int = kwargs.get("retries", 0)
+            retries: int = kwargs.get("_retries", 0)
             result: ApiResult = meth(*args, **kwargs)
             response: Response = result.response
             retry = inst._retry_required(response, retries)
 
             if retry is not False:
                 inst.options.deferrer.sleep(retry)
-                return inst.rest(*args[1:], **kwargs, retries=retries + 1)
+
+                kwargs["_retries"] = retries + 1
+                inst_meth = getattr(inst, meth.__name__)
+                return inst_meth(*args[1:], **kwargs)
             return result
         return wrapper
 
@@ -214,16 +220,22 @@ class Client(HttpxClient, ApiCommon):
         path: str,
         params: UnionRequestData = None,
         headers: HeaderTypes = {},
-        retries: int = 0
+        _retries: int = 0
     ) -> RestResult:
         meth = getattr(self, method)
         kwargs = self._build_request(method, path, params, headers)
         self._rest_pre_actions(**kwargs)
         response = meth(**kwargs)
-        return self._rest_post_actions(response)
+        return self._rest_post_actions(response, _retries)
 
     @_retry_request
-    def graphql(self, query: str, variables: dict = None) -> ApiResult:
+    def graphql(
+        self,
+        query: str,
+        variables: dict = None,
+        headers: HeaderTypes = {},
+        _retries: int = 0,
+    ) -> ApiResult:
         kwargs = self._build_request(
             "post",
             "/admin/api/graphql.json",
@@ -231,10 +243,11 @@ class Client(HttpxClient, ApiCommon):
                 "query": query,
                 "variables": variables,
             },
+            headers,
         )
         self._graphql_pre_actions(**kwargs)
         response = self.post(**kwargs)
-        return self._graphql_post_actions(response)
+        return self._graphql_post_actions(response, _retries)
 
 
 class AsyncClient(AsyncHttpxClient, ApiCommon):
@@ -255,14 +268,17 @@ class AsyncClient(AsyncHttpxClient, ApiCommon):
     def _retry_request(meth: callable) -> callable:
         async def wrapper(*args, **kwargs) -> ApiResult:
             inst: AsyncClient = args[0]
-            retries = kwargs.get("retries", 0)
+            retries = kwargs.get("_retries", 0)
             result: ApiResult = await meth(*args, **kwargs)
             response = result.response
             retry = inst._retry_required(response, retries)
 
             if retry is not False:
                 await inst.options.deferrer.asleep(retry)
-                return inst.rest(*args[1:], **kwargs, retries=retries + 1)
+
+                kwargs["_retries"] = retries + 1
+                inst_meth = getattr(inst, meth.__name__)
+                return await inst_meth(*args[1:], **kwargs)
             return result
         return wrapper
 
@@ -273,16 +289,22 @@ class AsyncClient(AsyncHttpxClient, ApiCommon):
         path: str,
         params: QueryParamTypes = None,
         headers: HeaderTypes = {},
-        retries: int = 0
+        _retries: int = 0
     ) -> RestResult:
         meth = getattr(self, method)
         kwargs = self._build_request(method, path, params, headers)
         self._rest_pre_actions(**kwargs)
         response = await meth(**kwargs)
-        return self._rest_post_actions(response)
+        return self._rest_post_actions(response, _retries)
 
     @_retry_request
-    async def graphql(self, query: str, variables: dict = None) -> ApiResult:
+    async def graphql(
+        self,
+        query: str,
+        variables: dict = None,
+        headers: HeaderTypes = {},
+        _retries: int = 0,
+    ) -> ApiResult:
         kwargs = self._build_request(
             "post",
             "/admin/api/graphql.json",
@@ -290,7 +312,8 @@ class AsyncClient(AsyncHttpxClient, ApiCommon):
                 "query": query,
                 "variables": variables,
             },
+            headers,
         )
         self._graphql_pre_actions(**kwargs)
         response = await self.post(**kwargs)
-        return self._graphql_post_actions(response)
+        return self._graphql_post_actions(response, _retries)

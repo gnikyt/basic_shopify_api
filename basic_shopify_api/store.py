@@ -10,15 +10,15 @@ class StateStore(ABC):
 
     @abstractmethod
     def all(self, session: Session) -> List[StoreValue]:
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def append(self, session: Session, value: StoreValue) -> None:
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def reset(self, session: Session) -> None:
-        pass
+        pass  # pragma: no cover
 
 
 class TimeMemoryStore(StateStore):
