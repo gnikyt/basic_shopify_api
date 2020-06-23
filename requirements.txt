@@ -7,3 +7,4 @@ httpx>=0.13
 pytest
 pytest-cov
 flake8
+coveralls

@@ -1,0 +1,18 @@
+{
+    "data": {
+        "shop": {
+            "name": "Apple Computers"
+        }
+    },
+    "extensions": {
+        "cost": {
+            "requestedQueryCost": 1,
+            "actualQueryCost": 1,
+            "throttleStatus": {
+                "maximumAvailable": 1000.0,
+                "currentlyAvailable": 999,
+                "restoreRate": 50.0
+            }
+        }
+    }
+}

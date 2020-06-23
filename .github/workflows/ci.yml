@@ -15,11 +15,31 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+
     - name: Lint
       run: flake8 . --count --exit-zero --statistics
+
     - name: Test
-      run: pytest
+      run: |
+        coverage run --source basic_shopify_api/ -m pytest
+        coverage report -m
+
+    - name: Coveralls
+      uses: AndreMiras/coveralls-python-action@develop
+      with:
+        parallel: true
+
+  coveralls_finish:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Coveralls Finished
+      uses: AndreMiras/coveralls-python-action@develop
+      with:
+        parallel-finished: true
