@@ -22,6 +22,7 @@ Support for:
   * [Session Setup](#session)
   * [REST Usage](#rest-usage)
   * [GraphQL Usage](#graphql-usage)
+  * [Pre/Post Actions](#prepost-actions)
   * [Testing](#testing)
   * [License](#license)
 

@@ -6,5 +6,6 @@ httpx>=0.13
 # Testing
 pytest
 pytest-cov
+pytest-asyncio
 flake8
 coveralls
