@@ -9,14 +9,14 @@ clean:
 	rm -rf .pytest_cache/ || true
 
 test: clean
-	env/bin/pytest
+	$(PREFIX)pytest
 
 cover: clean
-	env/bin/coverage run --source basic_shopify_api/ -m pytest
-	env/bin/coverage report -m
+	$(PREFIX)coverage run --source basic_shopify_api/ -m pytest
+	$(PREFIX)coverage report -m
 
 cover-html: cover
-	env/bin/coverage html -d htmlcov
+	$(PREFIX)coverage html -d htmlcov
 
 lint:
-	env/bin/flake8 . --count --exit-zero --statistics
+	$(PREFIX)flake8 . --count --exit-zero --statistics
