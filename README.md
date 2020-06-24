@@ -117,8 +117,8 @@ with Client(sess, opts) as client:
   # returns the following:
   # RestResult(
   #   response=The HTTPX response object,
-  #   body=A dict of JSON response,
-  #   errors=A dict of error response or None for no errors,
+  #   body=A dict of JSON response, or None if errors,
+  #   errors=A dict of error response (if possible), or None for no errors, or the exception error,
   #   status=The HTTP status code,
   #   link=A RestLink object of next/previous pagination info,
   #   retries=Number of retires for the request
@@ -142,8 +142,8 @@ async with AsyncClient(sess, opts) as client:
   # returns the following:
   # RestResult(
   #   response=The HTTPX response object,
-  #   body=A dict of JSON response,
-  #   errors=A dict of error response or None for no errors,
+  #   body=A dict of JSON response, or None if errors,
+  #   errors=A dict of error response (if possible), or None for no errors, or the exception error,
   #   status=The HTTP status code,
   #   link=A RestLink object of next/previous pagination info,
   #   retries=Number of retires for the request
@@ -169,16 +169,15 @@ from basic_shopify_api import Client
 with Client(sess, opts) as client:
   shop = client.graphql("{ shop { name } }")
   print(shop.response)
-  print(shop.body["shop"]["name"])
+  print(shop.body["data"]["shop"]["name"])
 
   # returns the following:
-  # RestResult(
+  # ApiResult(
   #   response=The HTTPX response object,
-  #   body=A dict of JSON response,
-  #   errors=A dict of error response or None for no errors,
+  #   body=A dict of JSON response, or None if errors,
+  #   errors=A dict of error response (if possible), or None for no errors, or the exception error,
   #   status=The HTTP status code,
   #   retries=Number of retires for the request,
-  #   retries=Number of retires for the request
   # )
 ```
 
@@ -194,13 +193,13 @@ from basic_shopify_api import AsyncClient
 async with AsyncClient(sess, opts) as client:
   shop = await client.graphql("{ shop { name } }")
   print(shop.response)
-  print(shop.body["name"])
+  print(shop.body["data"]["name"])
 
   # returns the following:
-  # RestResult(
+  # ApiResult(
   #   response=The HTTPX response object,
-  #   body=A dict of JSON response,
-  #   errors=A dict of error response or None for no errors,
+  #   body=A dict of JSON response, or None if errors,
+  #   errors=A dict of error response (if possible), or None for no errors, or the exception error,
   #   status=The HTTP status code,
   #   link=A RestLink object of next/previous pagination info,
   #   retries=Number of retires for the request
