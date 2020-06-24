@@ -19,6 +19,20 @@ def test_rest_retry():
 
 @pytest.mark.usefixtures("local_server")
 @local_server_session
+def test_rest_rate_limit():
+    with Client(*generate_opts_and_sess()) as c:
+        c.rest("get", "/admin/shop.json")
+        assert len(c.options.time_store.all(c.session)) == 1
+
+        c.rest("get", "/admin/shop.json")
+        assert len(c.options.time_store.all(c.session)) == 2
+
+        c.rest("get", "/admin/shop.json")
+        assert len(c.options.time_store.all(c.session)) == 1
+
+
+@pytest.mark.usefixtures("local_server")
+@local_server_session
 def test_graphql_retry():
     with Client(*generate_opts_and_sess()) as c:
         response = c.graphql(
@@ -27,6 +41,20 @@ def test_graphql_retry():
         )
         assert 502 in response.status
         assert response.retries == c.options.max_retries
+
+
+@pytest.mark.usefixtures("local_server")
+@local_server_session
+def test_graphql_cost_limit():
+    with Client(*generate_opts_and_sess()) as c:
+        c.graphql("{ shop { name } }")
+        c.graphql("{ shop { name } }")
+
+    with Client(*generate_opts_and_sess()) as c:
+        c.graphql(
+            query="{ shop { name } }",
+            headers={"x-test-fixture": "post_graphql_expensive.json"}
+        )
 
 
 @pytest.mark.usefixtures("local_server")

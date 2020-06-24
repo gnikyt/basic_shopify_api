@@ -11,10 +11,11 @@ def local_server_app(environ, start_response):
     path = environ["PATH_INFO"].split("/")[-1]
     status = environ.get("HTTP_X_TEST_STATUS", f"{HTTPStatus.OK.value} {HTTPStatus.OK.description}")
     headers = [("Content-Type", "application/json")]
+    fixture = environ.get("HTTP_X_TEST_FIXTURE", f"{method}_{path}")
     if "HTTP_X_TEST_RETRY" in environ:
         headers.append((RETRY_HEADER, environ["HTTP_X_TEST_RETRY"]))
 
-    with open(os.path.dirname(__file__) + f"/fixtures/{method}_{path}") as fixture:
+    with open(os.path.dirname(__file__) + f"/fixtures/{fixture}") as fixture:
         data = fixture.read().encode("utf-8")
 
     start_response(status, headers)

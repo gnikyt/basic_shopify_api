@@ -17,7 +17,7 @@ class Deferrer(metaclass=ABCMeta):
         return int(round(time.time() * 1000))
 
     @abstractmethod
-    def sleep(self, length: float) -> None:
+    def sleep(self, length: int) -> None:
         """
         Sleep implementation (sync).
 
@@ -27,7 +27,7 @@ class Deferrer(metaclass=ABCMeta):
         pass  # pragma: no cover
 
     @abstractmethod
-    def asleep(self, length: float) -> None:
+    def asleep(self, length: int) -> None:
         """
         Sleep implementation (async).
 
@@ -38,8 +38,8 @@ class Deferrer(metaclass=ABCMeta):
 
 
 class SleepDeferrer(Deferrer):
-    def sleep(self, length: float) -> None:
+    def sleep(self, length: int) -> None:
         time.sleep(length / 1000.0)
 
-    async def asleep(self, length: float) -> None:
+    async def asleep(self, length: int) -> None:
         asyncio.sleep(length / 1000.0)

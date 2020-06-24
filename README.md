@@ -8,13 +8,14 @@ This library extends HTTPX and implements a read-to-use sync/async client for RE
 
 Support for:
 
-+ Sync and async API calls
-+ REST API
-+ GraphQL API
-+ REST rate limiting
-+ GraphQL cost limiting
-+ Automatic retries of failed requests
-+ Pre/post action support
+[X] Sync and async API calls
+[X] REST API
+[X] GraphQL API
+[X] REST rate limiting
+[X] GraphQL cost limiting
+[X] Automatic retries of failed requests
+[X] Support for Retry-After headers
+[X] Pre/post action support
 
 ## Table of Contents
   * [Installation](#installation)
@@ -238,7 +239,7 @@ with Client(sess, opts) as client:
 
 ## Testing
 
-`pytest`
+`make test`, for coverage reports, use `make cover` or `make cover-html`.
 
 ## License
 
