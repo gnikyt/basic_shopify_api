@@ -22,12 +22,10 @@ jobs:
         pip install -r requirements.txt
 
     - name: Lint
-      run: flake8 . --count --exit-zero --statistics
+      run: make lint
 
     - name: Test
-      run: |
-        coverage run --source basic_shopify_api/ -m pytest
-        coverage report -m
+      run: make cover
 
     - name: Coveralls
       uses: AndreMiras/coveralls-python-action@develop

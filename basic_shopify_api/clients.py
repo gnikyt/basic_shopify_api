@@ -1,7 +1,7 @@
 from httpx import Client as HttpxClient, AsyncClient as AsyncHttpxClient
 from httpx._types import HeaderTypes, QueryParamTypes
 from httpx._models import Response
-from typing import Pattern, Tuple, Union
+from typing import Pattern, Union
 from .types import UnionRequestData, ParsedResponse
 from .models import Session, RestLink, RestResult, ApiResult
 from .options import Options
