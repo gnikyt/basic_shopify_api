@@ -2,6 +2,7 @@ from httpx import Client as HttpxClient, AsyncClient as AsyncHttpxClient
 from httpx._types import HeaderTypes, QueryParamTypes
 from httpx._models import Response
 from typing import Pattern, Tuple, Union
+from .types import UnionRequestData, ParsedResponse
 from .models import Session, RestLink, RestResult, ApiResult
 from .options import Options
 from .constants import NOT_AUTHABLE_PATTERN, \
@@ -10,7 +11,6 @@ from .constants import NOT_AUTHABLE_PATTERN, \
     ACCESS_TOKEN_HEADER, \
     ONE_SECOND, \
     RETRY_HEADER
-from .types import UnionRequestData
 import re
 
 
@@ -116,25 +116,21 @@ class ApiCommon:
         time_store.reset(self.session)
         time_store.append(self.session, deferrer.current_time())
 
-    def _cost_update(self, body: Response) -> None:
+    def _cost_update(self, body: dict) -> None:
         if "extensions" not in body:
             return
         cost_store = self.options.cost_store
         cost_store.append(self.session, int(body["extensions"]["cost"]["actualQueryCost"]))
 
-    def _parse_response(self, response: Response) -> Tuple:
-        errors = None
+    def _parse_response(self, response: Response) -> ParsedResponse:
+        body, errors = None, None
         try:
             body = response.json()
-            if "data" in body:
-                body = body["data"]
-            if "errors" in body:
-                errors = body["errors"]
-            elif "error" in body:
-                errors = body["error"]
-        except:
-            body = response.text
-            errors = True if "error" in body else None
+            if "errors" in body or "error" in body:
+                errors = body.get("errors", body.get("error", None))
+                body = None
+        except Exception as e:
+            errors = e
         return (body, errors)
 
     def _retry_required(self, response: Response, retries: int) -> Union[bool, float]:
@@ -153,7 +149,7 @@ class ApiCommon:
         [meth(self, **kwargs) for meth in self.options.graphql_pre_actions]
 
     def _rest_post_actions(self, response: Response, retries: int) -> RestResult:
-        (body, errors) = self._parse_response(response)
+        body, errors = self._parse_response(response)
         result = RestResult(
             response=response,
             status=response.status_code,
@@ -167,7 +163,7 @@ class ApiCommon:
         return result
 
     def _graphql_post_actions(self, response: Response, retries: int) -> ApiResult:
-        (body, errors) = self._parse_response(response)
+        body, errors = self._parse_response(response)
         self._cost_update(body)
         result = ApiResult(
             response=response,

@@ -1,6 +1,7 @@
 import pytest
-from .utils import generate_opts_and_sess, local_server_session, async_local_server_session
+from json import JSONDecodeError
 from basic_shopify_api import Client, AsyncClient
+from .utils import generate_opts_and_sess, local_server_session, async_local_server_session
 
 
 def test_is_authable():
@@ -48,16 +49,16 @@ def test_rest_return(local_server):
 def test_rest_error_return(local_server):
     with Client(*generate_opts_and_sess()) as c:
         response = c.rest("get", "/admin/api/error.json")
-        assert isinstance(response.body, dict)
+        assert response.body is None
         assert response.errors == "Not found"
 
         response = c.rest("get", "/admin/api/errors.json")
-        assert isinstance(response.body, dict)
+        assert response.body is None
         assert response.errors == "Not found"
 
         response = c.rest("get", "/admin/api/decode_error.json")
-        assert isinstance(response.body, str)
-        assert response.errors is True
+        assert response.body is None
+        assert isinstance(response.errors, JSONDecodeError)
 
 
 @pytest.mark.asyncio

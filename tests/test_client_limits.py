@@ -11,7 +11,7 @@ def test_rest_retry():
         response = c.rest(
             method="get",
             path="/admin/shop.json",
-            headers={"x-test-status": f"{HTTPStatus.BAD_GATEWAY.value} {HTTPStatus.BAD_GATEWAY.phrase}"}
+            headers={"x-test-status": f"{HTTPStatus.BAD_GATEWAY.value} {HTTPStatus.BAD_GATEWAY.phrase}"},
         )
         assert 502 in response.status
         assert response.retries == c.options.max_retries
@@ -23,7 +23,7 @@ def test_graphql_retry():
     with Client(*generate_opts_and_sess()) as c:
         response = c.graphql(
             query="{ shop { name } }",
-            headers={"x-test-status": f"{HTTPStatus.BAD_GATEWAY.value} {HTTPStatus.BAD_GATEWAY.phrase}"}
+            headers={"x-test-status": f"{HTTPStatus.BAD_GATEWAY.value} {HTTPStatus.BAD_GATEWAY.phrase}"},
         )
         assert 502 in response.status
         assert response.retries == c.options.max_retries
@@ -53,7 +53,7 @@ async def test_async_rest_retry():
         response = await c.rest(
             method="get",
             path="/admin/shop.json",
-            headers={"x-test-status": f"{HTTPStatus.BAD_GATEWAY.value} {HTTPStatus.BAD_GATEWAY.phrase}"}
+            headers={"x-test-status": f"{HTTPStatus.BAD_GATEWAY.value} {HTTPStatus.BAD_GATEWAY.phrase}"},
         )
         assert 502 in response.status
         assert response.retries == c.options.max_retries

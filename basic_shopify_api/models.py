@@ -1,7 +1,7 @@
-from os import environ
 from typing import Union, Dict, Optional
 from httpx._models import Response
 from http import HTTPStatus
+from .types import ParsedBody, ParsedError
 
 
 class Session:
@@ -27,8 +27,8 @@ class ApiResult:
         self,
         response: Response,
         status: HTTPStatus,
-        body: Union[Dict[str, str], str],
-        errors: Optional[Union[Dict[str, str], str]],
+        body: ParsedBody,
+        errors: ParsedError,
         retries: int = 0,
     ):
         self.response = response
