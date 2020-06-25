@@ -6,6 +6,7 @@ import base64
 
 e = "utf-8"
 
+
 def create_hmac(
     data: Union[dict, str],
     raw: bool = False,
