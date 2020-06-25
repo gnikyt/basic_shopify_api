@@ -11,3 +11,5 @@ StoreContainer = Dict[str, List[StoreValue]]
 ParsedBody = Optional[dict]
 # Parsed error body from response
 ParsedError = Optional[Union[dict, Exception]]
+# Time to sleep for deferrer
+SleepTime = Union[float, int]

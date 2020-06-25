@@ -8,14 +8,14 @@ This library extends HTTPX and implements a read-to-use sync/async client for RE
 
 Support for:
 
-[X] Sync and async API calls
-[X] REST API
-[X] GraphQL API
-[X] REST rate limiting
-[X] GraphQL cost limiting
-[X] Automatic retries of failed requests
-[X] Support for Retry-After headers
-[X] Pre/post action support
+- [X] Sync and async API calls
+- [X] REST API
+- [X] GraphQL API
+- [X] REST rate limiting
+- [X] GraphQL cost limiting
+- [X] Automatic retries of failed requests
+- [X] Support for Retry-After headers
+- [X] Pre/post action support
 
 ## Table of Contents
   * [Installation](#installation)
@@ -24,6 +24,7 @@ Support for:
   * [REST Usage](#rest-usage)
   * [GraphQL Usage](#graphql-usage)
   * [Pre/Post Actions](#prepost-actions)
+  * [Utilities](#utilities)
   * [Testing](#testing)
   * [License](#license)
 
@@ -235,6 +236,44 @@ with Client(sess, opts) as client:
   shop = client.rest("get", "/admin/api/shop.json")
   print(shop)
   # Output: "hello" "world" <ApiResult>
+```
+
+## Utilities
+
+This will be expanding, but as of now there are utilities to help verify HMAC for 0Auth/URL, proxy requests, and webhook data.
+
+### 0Auth/URL
+
+```python
+from basic_shopify_api.utils import hmac_verify
+
+params = request.args # some method to get a dict of query params
+verified = hmac_verify("standard", "secret key", params)
+if verified:
+    print("Verified!")
+```
+
+### Proxy
+
+```python
+from basic_shopify_api.utils import hmac_verify
+
+params = request.args # some method to get a dict of query params
+verified = hmac_verify("proxy", "secret key", params)
+if verified:
+    print("Verified!")
+```
+
+### Webhook
+
+```python
+from basic_shopify_api.utils import hmac_verify
+
+hmac_header = request.headers.get("x-shopify-hmac-sha256") # some method to get the HMAC header
+params = request.json # some method to get a dict of JSON data
+verified = hmac_verify("webhook", "secret key", params, hmac_header)
+if verified:
+    print("Verified!")
 ```
 
 ## Testing
