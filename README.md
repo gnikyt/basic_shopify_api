@@ -2,7 +2,7 @@
 
 ![Tests](https://github.com/osiset/basic_shopify_api/workflows/Package%20Test/badge.svg?branch=master)
 [![Coverage](https://coveralls.io/repos/github/osiset/basic_shopify_api/badge.svg?branch=master)](https://coveralls.io/github/osiset/basic_shopify_api?branch=master)
-[![PyPi version](https://pypi.org/project/basic-shopify-api)](https://badge.fury.io/py/basic-shopify-api.svg)
+[![PyPi version](https://badge.fury.io/py/basic-shopify-api.svg)](https://pypi.org/project/basic-shopify-api)
 
 This library extends HTTPX and implements a read-to-use sync/async client for REST and GraphQL API calls to Shopify's API.
 
