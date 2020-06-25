@@ -1,4 +1,4 @@
-.PHONY: clean test cover cover-html lint build build-verify
+.PHONY: clean test cover cover-html lint build build-verify publish
 
 clean:
 	find . -name '*.pyc' -exec rm --force {} +
@@ -29,3 +29,6 @@ build: clean
 
 build-verify:
 	$(PREFIX)twine check dist/*
+
+publish:
+	$(PREFIX)twine upload dist/*
