@@ -4,7 +4,7 @@ from ..constants import NOT_AUTHABLE_PATTERN, \
     ACCESS_TOKEN_HEADER, \
     ONE_SECOND, \
     RETRY_HEADER
-from ..types import UnionRequestData
+from ..types import UnionRequestData, ParsedBody
 from ..models import RestLink, RestResult, ApiResult
 from ..constants import REST, LINK_HEADER
 from httpx._types import HeaderTypes
@@ -92,29 +92,29 @@ class ApiCommon:
         if len(all_time) == 0 or len(all_cost) == 0:
             return False
 
-        last_time = all_time[-1]
-        last_cost = all_cost[-1]
+        last_time, last_cost = all_time[-1], all_cost[-1]
         time_diff = self.options.deferrer.current_time() - last_time
         points_per_sec = self.options.graphql_limit
 
-        #self.options.cost_store.reset(self.session)
+        self.options.time_store.reset(self.session)
+        self.options.cost_store.reset(self.session)
         return False if time_diff > ONE_SECOND or last_cost < points_per_sec else ONE_SECOND - time_diff
 
-    def _cost_update(self, body: dict) -> None:
+    def _cost_update(self, body: ParsedBody) -> None:
         if "extensions" not in body:
             return
-        cost_store = self.options.cost_store
-        cost_store.append(self.session, int(body["extensions"]["cost"]["actualQueryCost"]))
+        self.options.cost_store.append(self.session, int(body["extensions"]["cost"]["actualQueryCost"]))
 
     def _parse_response(self, api: str, response: Response, retries: int) -> Union[ApiResult, RestResult]:
-        body, errors = None, None
         try:
+            errors = None
             body = response.json()
             if "errors" in body or "error" in body:
                 errors = body.get("errors", body.get("error", None))
                 body = None
         except Exception as e:
             errors = e
+            body = None
 
         kwargs = {
             "response": response,

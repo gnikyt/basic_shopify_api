@@ -4,6 +4,8 @@ import hmac
 import base64
 
 
+e = "utf-8"
+
 def create_hmac(
     data: Union[dict, str],
     raw: bool = False,
@@ -20,21 +22,40 @@ def create_hmac(
             query_value = ",".join(value) if isinstance(value, (tuple, list)) else value
             query_string.append(f"{key}={query_value}")
         join_key = "&" if build_query_with_join else ""
-        data = join_key.join(query_string).encode("utf-8")
+        data = join_key.join(query_string).encode(e)
 
-    h = hmac.new(secret, data, hashlib.sha256)
-    hmac_local = h.hexdigest().encode("utf-8")
+    hmac_local = hmac.new(secret.encode(e), data, hashlib.sha256)
     if encode:
-        encoded = base64.urlsafe_b64encode(hmac_local)
-        return str(encoded, "utf-8")
-    return hmac_local
+        # For webhooks
+        return base64.b64encode(hmac_local.digest())
+    # For 0Auth and proxy
+    return hmac_local.hexdigest().encode(e)
 
 
-def hmac_verify(params: dict) -> bool:
-    if "hmac" not in params:
-        return False
+def hmac_verify(source: str, secret: str, params: dict, hmac_header: str = None) -> bool:
+    if source == "standard":
+        hmac_param = params["hmac"].encode(e)
+        params.pop("hmac", None)
+        kwargs = {
+            "data": params,
+            "build_query": True,
+            "build_query_with_join": True,
+        }
+    elif source == "proxy":
+        hmac_param = params["signature"].encode(e)
+        params.pop("signature", None)
+        kwargs = {
+            "data": params,
+            "build_query": True,
+            "build_query_with_join": False,
+        }
+    elif source == "webhook":
+        hmac_param = hmac_header.encode(e)
+        kwargs = {
+            "data": params.encode(e),
+            "raw": True,
+            "encode": True,
+        }
 
-    hmac_param = params["hmac"].encode("utf-8")
-    params.pop("key", None)
-    hmac_local = create_hmac(data=params, build_query=True, build_query_with_join=True)
+    hmac_local = create_hmac(**kwargs, secret=secret)
     return hmac.compare_digest(hmac_local, hmac_param)

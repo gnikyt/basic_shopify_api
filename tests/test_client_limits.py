@@ -21,13 +21,10 @@ def test_rest_retry():
 @local_server_session
 def test_rest_rate_limit():
     with Client(*generate_opts_and_sess()) as c:
-        c.rest("get", "/admin/shop.json")
-        assert len(c.options.time_store.all(c.session)) == 1
+        for i in range(2):
+            c.options.time_store.append(c.session, c.options.deferrer.current_time())
 
-        c.rest("get", "/admin/shop.json")
-        assert len(c.options.time_store.all(c.session)) == 2
-
-        c.rest("get", "/admin/shop.json")
+        c.rest("get", "/admin/api/shop.json")
         assert len(c.options.time_store.all(c.session)) == 1
 
 
@@ -47,14 +44,13 @@ def test_graphql_retry():
 @local_server_session
 def test_graphql_cost_limit():
     with Client(*generate_opts_and_sess()) as c:
-        c.graphql("{ shop { name } }")
-        c.graphql("{ shop { name } }")
+        for i in range(2):
+            c.options.time_store.append(c.session, c.options.deferrer.current_time())
+        c.options.cost_store.append(c.session, 100)
 
-    with Client(*generate_opts_and_sess()) as c:
-        c.graphql(
-            query="{ shop { name } }",
-            headers={"x-test-fixture": "post_graphql_expensive.json"}
-        )
+        c.graphql("{ shop { name } }")
+        assert len(c.options.time_store.all(c.session)) == 1
+        assert len(c.options.cost_store.all(c.session)) == 1
 
 
 @pytest.mark.usefixtures("local_server")
@@ -85,3 +81,29 @@ async def test_async_rest_retry():
         )
         assert 502 in response.status
         assert response.retries == c.options.max_retries
+
+
+@pytest.mark.asyncio
+@pytest.mark.usefixtures("local_server")
+@async_local_server_session
+async def test_async_rest_rate_limit():
+    async with AsyncClient(*generate_opts_and_sess()) as c:
+        for i in range(2):
+            c.options.time_store.append(c.session, c.options.deferrer.current_time())
+
+        await c.rest("get", "/admin/api/shop.json")
+        assert len(c.options.time_store.all(c.session)) == 1
+
+
+@pytest.mark.asyncio
+@pytest.mark.usefixtures("local_server")
+@async_local_server_session
+async def test_async_graphql_cost_limit():
+    async with AsyncClient(*generate_opts_and_sess()) as c:
+        for i in range(2):
+            c.options.time_store.append(c.session, c.options.deferrer.current_time())
+        c.options.cost_store.append(c.session, 100)
+
+        await c.graphql("{ shop { name } }")
+        assert len(c.options.time_store.all(c.session)) == 1
+        assert len(c.options.cost_store.all(c.session)) == 1
