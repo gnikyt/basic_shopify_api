@@ -9,3 +9,6 @@ pytest-cov
 pytest-asyncio
 flake8
 coveralls
+
+# Packaging
+twine
