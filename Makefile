@@ -34,7 +34,9 @@ verify:
 publish:
 	$(PREFIX)twine upload dist/*
 
-docs:
+docs: clean
 	$(PREFIX)pdoc --html --output-dir docs basic_shopify_api
+	mv docs/basic_shopify_api/* docs/
+	rm -rf docs/basic_shopify_api/
 
 release: build verify docs publish
