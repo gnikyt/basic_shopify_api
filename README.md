@@ -18,21 +18,22 @@ Support for:
 - [X] Pre/post action support
 
 ## Table of Contents
-  - [Installation](#installation)
-  - [Options Setup](#options)
-  - [Session Setup](#session)
-  - [REST Usage](#rest-usage)
-  - [GraphQL Usage](#graphql-usage)
-  - [Pre/Post Actions](#prepost-actions)
-  - [Utilities](#utilities)
-  - [Testing](#testing)
-  - [License](#license)
+
+- [Installation](#installation)
+- [Options Setup](#options)
+- [Session Setup](#session)
+- [REST Usage](#rest-usage)
+- [GraphQL Usage](#graphql-usage)
+- [Pre/Post Actions](#prepost-actions)
+- [Utilities](#utilities)
+- [Testing](#testing)
+- [License](#license)
 
 ## Installation
 
-*Note: currently not published.*
+`$ pip install basic-shopify-api`
 
-`pip install basic_shopify_api`
+Requires Python 3.
 
 ## Options
 
@@ -87,9 +88,10 @@ For private access, you will need to fill in:
 
 Example:
 
-    from basic_shopify_api import Session
-    
-    session = Session(domain="john-doe.myshopify.com", key="abc", password="123")
+```python
+from basic_shopify_api import Session
+session = Session(domain="john-doe.myshopify.com", key="abc", password="123")
+```
 
 ## REST Usage
 
@@ -100,51 +102,53 @@ Example:
 - `params` (dict) (optional), being a dict of query or json data.
 - `headers` (dict) (optional), being a dict of additional headers to pass with the request.
 
-### Sync
+### REST Sync
 
 Example:
 
-    from basic_shopify_api import Client
-    
-    # ...
-    
-    with Client(sess, opts) as client:
-      shop = client.rest("get", "/admin/api/shop.json", {"fields": "name,email"}})
-      print(shop.response)
-      print(shop.body["name"])
-    
-      # returns the following:
-      # RestResult(
-      #   response=The HTTPX response object,
-      #   body=A dict of JSON response, or None if errors,
-      #   errors=A dict of error response (if possible), or None for no errors, or the exception error,
-      #   status=The HTTP status code,
-      #   link=A RestLink object of next/previous pagination info,
-      #   retries=Number of retires for the request
-      # )
+```python
+from basic_shopify_api import Client
 
-### Async
+with Client(sess, opts) as client:
+    shop = client.rest("get", "/admin/api/shop.json", {"fields": "name,email"})
+    print(shop.response)
+    print(shop.body["name"])
+
+    # returns the following:
+    # RestResult(
+    #   response=The HTTPX response object,
+    #   body=A dict of JSON response, or None if errors,
+    #   errors=A dict of error response (if possible), or None for no errors, or the exception error,
+    #   status=The HTTP status code,
+    #   link=A RestLink object of next/previous pagination info,
+    #   retries=Number of retires for the request
+    # )
+```
+
+### REST Async
 
 Example:
 
-    from basic_shopify_api import AsyncClient
-    
-    # ...
-    
-    async with AsyncClient(sess, opts) as client:
-      shop = await client.rest("get", "/admin/api/shop.json", {"fields": "name,email"}})
-      print(shop.response)
-      print(shop.body["name"])
-    
-      # returns the following:
-      # RestResult(
-      #   response=The HTTPX response object,
-      #   body=A dict of JSON response, or None if errors,
-      #   errors=A dict of error response (if possible), or None for no errors, or the exception error,
-      #   status=The HTTP status code,
-      #   link=A RestLink object of next/previous pagination info,
-      #   retries=Number of retires for the request
-      # )
+```python
+from basic_shopify_api import AsyncClient
+
+# ...
+
+async with AsyncClient(sess, opts) as client:
+    shop = await client.rest("get", "/admin/api/shop.json", {"fields": "name,email"})
+    print(shop.response)
+    print(shop.body["name"])
+
+    # returns the following:
+    # RestResult(
+    #   response=The HTTPX response object,
+    #   body=A dict of JSON response, or None if errors,
+    #   errors=A dict of error response (if possible), or None for no errors, or the exception error,
+    #   status=The HTTP status code,
+    #   link=A RestLink object of next/previous pagination info,
+    #   retries=Number of retires for the request
+    # )
+```
 
 ## GraphQL Usage
 
@@ -153,111 +157,125 @@ Example:
 - `query` (str), being the GraphQL query string.
 - `variables` (dict) (optional), being the variables for your query or mutation.
 
-### Sync
+### GraphQL Sync
 
 Example:
 
-    from basic_shopify_api import Client
-    
-    # ...
-    
-    with Client(sess, opts) as client:
-      shop = client.graphql("{ shop { name } }")
-      print(shop.response)
-      print(shop.body["data"]["shop"]["name"])
-    
-      # returns the following:
-      # ApiResult(
-      #   response=The HTTPX response object,
-      #   body=A dict of JSON response, or None if errors,
-      #   errors=A dict of error response (if possible), or None for no errors, or the exception error,
-      #   status=The HTTP status code,
-      #   retries=Number of retires for the request,
-      # )
+```python
+from basic_shopify_api import Client
 
-### Async
+# ...
+
+with Client(sess, opts) as client:
+    shop = client.graphql("{ shop { name } }")
+    print(shop.response)
+    print(shop.body["data"]["shop"]["name"])
+
+    # returns the following:
+    # ApiResult(
+    #   response=The HTTPX response object,
+    #   body=A dict of JSON response, or None if errors,
+    #   errors=A dict of error response (if possible), or None for no errors, or the exception error,
+    #   status=The HTTP status code,
+    #   retries=Number of retires for the request,
+    # )
+```
+
+### GraphQL Async
 
 Example:
 
-    from basic_shopify_api import AsyncClient
-    
-    # ...
-    
-    async with AsyncClient(sess, opts) as client:
-      shop = await client.graphql("{ shop { name } }")
-      print(shop.response)
-      print(shop.body["data"]["name"])
-    
-      # returns the following:
-      # ApiResult(
-      #   response=The HTTPX response object,
-      #   body=A dict of JSON response, or None if errors,
-      #   errors=A dict of error response (if possible), or None for no errors, or the exception error,
-      #   status=The HTTP status code,
-      #   link=A RestLink object of next/previous pagination info,
-      #   retries=Number of retires for the request
-      # )
+```python
+from basic_shopify_api import AsyncClient
+
+# ...
+
+async with AsyncClient(sess, opts) as client:
+    shop = await client.graphql("{ shop { name } }")
+    print(shop.response)
+    print(shop.body["data"]["name"])
+
+    # returns the following:
+    # ApiResult(
+    #   response=The HTTPX response object,
+    #   body=A dict of JSON response, or None if errors,
+    #   errors=A dict of error response (if possible), or None for no errors, or the exception error,
+    #   status=The HTTP status code,
+    #   link=A RestLink object of next/previous pagination info,
+    #   retries=Number of retires for the request
+    # )
+```
 
 ## Pre/Post Actions
 
 To register a pre or post action for REST or GraphQL, simply append it to your options setup.
 
-    from basic_shopify_api import Options, Client
-    
-    def say_hello(inst):
-      """inst is the current client instance, either Client or AsyncClient"""
-      print("hello")
-    
-    def say_world(inst, result):
-      """
-      inst is the current client instance, either Client or AsyncClient.
-      result is either RestResult or GraphQLResult object.
-      """
-      print("world")
-    
-    opts = Options()
-    opts.rest_pre_actions = [say_hello]
-    opts.rest_post_ations = [say_world]
-    
-    sess = Session(domain="john-doe.myshopify.com", key="abc", password="134")
-    
-    with Client(sess, opts) as client:
-      shop = client.rest("get", "/admin/api/shop.json")
-      print(shop)
-      # Output: "hello" "world" <ApiResult>
-    
+```python
+from basic_shopify_api import Options, Client
+
+def say_hello(inst):
+    """inst is the current client instance, either Client or AsyncClient"""
+    print("hello")
+
+def say_world(inst, result):
+    """
+    inst is the current client instance, either Client or AsyncClient.
+    result is either RestResult or GraphQLResult object.
+    """
+    print("world")
+
+opts = Options()
+opts.rest_pre_actions = [say_hello]
+opts.rest_post_ations = [say_world]
+
+sess = Session(domain="john-doe.myshopify.com", key="abc", password="134")
+
+with Client(sess, opts) as client:
+    shop = client.rest("get", "/admin/api/shop.json")
+    print(shop)
+    # Output: "hello" "world" <ApiResult>
+```
+
 ## Utilities
 
 This will be expanding, but as of now there are utilities to help verify HMAC for 0Auth/URL, proxy requests, and webhook data.
 
 ### 0Auth/URL
 
-    from basic_shopify_api.utils import hmac_verify
-    
-    params = request.args # some method to get a dict of query params
-    verified = hmac_verify("standard", "secret key", params)
-    print("Verified? {verified}")
+```python
+from basic_shopify_api.utils import hmac_verify
+
+params = request.args # some method to get a dict of query params
+verified = hmac_verify("standard", "secret key", params)
+print("Verified? {verified}")
+```
 
 ### Proxy
 
-    from basic_shopify_api.utils import hmac_verify
-    
-    params = request.args # some method to get a dict of query params
-    verified = hmac_verify("proxy", "secret key", params)
-    print("Verified? {verified}")
+```python
+from basic_shopify_api.utils import hmac_verify
+
+params = request.args # some method to get a dict of query params
+verified = hmac_verify("proxy", "secret key", params)
+print("Verified? {verified}")
+```
 
 ### Webhook
 
-    from basic_shopify_api.utils import hmac_verify
-    
-    hmac_header = request.headers.get("x-shopify-hmac-sha256") # some method to get the HMAC header
-    params = request.json # some method to get a dict of JSON data
-    verified = hmac_verify("webhook", "secret key", params, hmac_header)
-    print("Verified? {verified}")
+```python
+from basic_shopify_api.utils import hmac_verify
+
+hmac_header = request.headers.get("x-shopify-hmac-sha256") # some method to get the HMAC header
+params = request.json # some method to get a dict of JSON data
+verified = hmac_verify("webhook", "secret key", params, hmac_header)
+print("Verified? {verified}")
+```
 
 ## Testing
 
-`make test`, for coverage reports, use `make cover` or `make cover-html`.
+`make test`.
+
+For coverage reports, use `make cover` or `make cover-html`.
 
 ## License
 

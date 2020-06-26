@@ -1,4 +1,4 @@
-.PHONY: clean test cover cover-html lint build build-verify publish
+.PHONY: clean test cover cover-html lint build verify publish docs
 
 clean:
 	find . -name '*.pyc' -exec rm --force {} +
@@ -7,6 +7,7 @@ clean:
 	find . -name '*.egg-info' -type d -exec rm -rf {} +
 	find . -name 'dist' -type d -exec rm -rf {} +
 	find . -name 'build' -type d -exec rm -rf {} +
+	find . -name 'docs' -type d -exec rm -rf {} +
 	rm .coverage || true
 	rm -rf htmlcov/ || true
 	rm -rf .pytest_cache/ || true
@@ -27,8 +28,11 @@ lint:
 build: clean
 	python setup.py sdist bdist_wheel
 
-build-verify:
+verify:
 	$(PREFIX)twine check dist/*
 
 publish:
 	$(PREFIX)twine upload dist/*
+
+docs:
+	$(PREFIX)pdoc --html --output-dir docs basic_shopify_api
