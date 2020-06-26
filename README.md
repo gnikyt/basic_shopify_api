@@ -27,6 +27,7 @@ Support for:
 - [Pre/Post Actions](#prepost-actions)
 - [Utilities](#utilities)
 - [Testing](#testing)
+- [Documentation](#documentation)
 - [License](#license)
 
 ## Installation
@@ -276,6 +277,10 @@ print("Verified? {verified}")
 `make test`.
 
 For coverage reports, use `make cover` or `make cover-html`.
+
+## Documentation
+
+See [this Github page](https://osiset.com/basic_shopify_api/) or view `docs/`.
 
 ## License
 
