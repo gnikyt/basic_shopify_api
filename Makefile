@@ -1,4 +1,4 @@
-.PHONY: clean test cover cover-html lint build verify publish docs
+.PHONY: clean test cover cover-html lint build verify publish docs release
 
 clean:
 	find . -name '*.pyc' -exec rm --force {} +
@@ -36,3 +36,5 @@ publish:
 
 docs:
 	$(PREFIX)pdoc --html --output-dir docs basic_shopify_api
+
+release: build verify docs publish

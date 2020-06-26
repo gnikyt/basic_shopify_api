@@ -13,4 +13,4 @@ coveralls
 # Packaging
 twine
 pypandoc
-pydoc
+pdoc
