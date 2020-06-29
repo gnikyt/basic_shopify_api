@@ -285,3 +285,7 @@ See [this Github page](https://osiset.com/basic_shopify_api/) or view `docs/`.
 ## License
 
 This project is released under the MIT [license](https://github.com/osiset/basic_shopify_api/blob/master/LICENSE).
+
+## Misc
+
+Using PHP? [Check out Basic-Shopify-API](https://github.com/osiset/Basic-Shopify-API).
