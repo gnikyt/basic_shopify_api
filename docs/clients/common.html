@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>basic_shopify_api.clients.common API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>basic_shopify_api.clients.common</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from ..constants import NOT_AUTHABLE_PATTERN, \
+    NOT_VERSIONABLE_PATTERN, \
+    LINK_PATTERN, \
+    ACCESS_TOKEN_HEADER, \
+    ONE_SECOND, \
+    RETRY_HEADER
+from ..types import UnionRequestData, ParsedBody
+from ..models import RestLink, RestResult, ApiResult
+from ..constants import REST, LINK_HEADER
+from httpx._types import HeaderTypes
+from httpx._models import Response
+from typing import Pattern, Union
+import re
+
+
+class ApiCommon:
+    &#34;&#34;&#34;
+    A common class shared between all clients to help prevent duplicated
+    code between sync and async.
+    &#34;&#34;&#34;
+
+    @property
+    def _regex_not_authable(self) -&gt; Pattern:
+        &#34;&#34;&#34;
+        Compile NOT_AUTHABLE_PATTERN once.
+        &#34;&#34;&#34;
+
+        return re.compile(NOT_AUTHABLE_PATTERN)
+
+    @property
+    def _regex_not_versionable(self) -&gt; Pattern:
+        &#34;&#34;&#34;
+        Compile NOT_VERSIONABLE_PATH once.
+        &#34;&#34;&#34;
+
+        return re.compile(NOT_VERSIONABLE_PATTERN)
+
+    @property
+    def _regex_link(self) -&gt; Pattern:
+        &#34;&#34;&#34;
+        Compile LINK_PATTERN once.
+        &#34;&#34;&#34;
+
+        return re.compile(LINK_PATTERN)
+
+    def is_authable(self, path: str) -&gt; bool:
+        &#34;&#34;&#34;
+        Determine if the path need authentication.
+
+        Args:
+            path: The URL path.
+        &#34;&#34;&#34;
+
+        return not bool(self._regex_not_authable.match(path))
+
+    def is_versionable(self, path: str) -&gt; bool:
+        &#34;&#34;&#34;
+        Determine if the path needs API version.
+
+        Args:
+            path: The URL path.
+        &#34;&#34;&#34;
+
+        return not bool(self._regex_not_versionable.match(path))
+
+    def replace_path(self, path: str) -&gt; str:
+        &#34;&#34;&#34;
+        Adds versioning to the path.
+
+        Args:
+            path: The URL path.
+        &#34;&#34;&#34;
+
+        return path.replace(&#34;/api&#34;, f&#34;/api/{self.options.version}&#34;)
+
+    def version_path(self, path: str, ignore_check: bool = False) -&gt; str:
+        &#34;&#34;&#34;
+        Determines if the path needs to be versioned.
+
+        Args:
+            path: The URL path.
+            ignore_check: Ignore checks if version is required, simply replace it anyways.
+        &#34;&#34;&#34;
+
+        if ignore_check:
+            return self.replace_path(path)
+
+        ignore_versioning = (
+            not self.is_authable(path) or
+            not self.is_versionable(path) or
+            self.options.version in path
+        )
+        return path if ignore_versioning else self.replace_path(path)
+
+    def _build_headers(self, headers: HeaderTypes) -&gt; HeaderTypes:
+        &#34;&#34;&#34;
+        Build headers to send with the request.
+        Combines headers defined in options with inputted headers.
+        Also will add in ACCESS_TOKEN_HEADER if the API call is private.
+
+        Args:
+            headers: Dict of headers to add to the request.
+        &#34;&#34;&#34;
+
+        if self.options.is_private:
+            headers = {ACCESS_TOKEN_HEADER: self.session.password, **headers}
+        return {**self.options.headers, **headers}
+
+    def _build_request(
+        self,
+        method: str,
+        path: str,
+        params: UnionRequestData = {},
+        headers: HeaderTypes = {}
+    ) -&gt; dict:
+        &#34;&#34;&#34;
+        Builds a request based on the method of request (GET/POST).
+        &#34;&#34;&#34;
+
+        kwargs = {
+            &#34;url&#34;: self.version_path(path),
+            &#34;headers&#34;: self._build_headers(headers),
+        }
+        if method == &#34;get&#34;:
+            # GET, send as query
+            kwargs[&#34;params&#34;] = params
+        else:
+            # POST, send as JSON
+            kwargs[&#34;json&#34;] = params
+        return kwargs
+
+    def _rest_extract_link(self, headers: HeaderTypes) -&gt; RestLink:
+        &#34;&#34;&#34;
+        REST responses, if paginated, will contain a header which will
+        contain a string (pageinfo) for the next and previous calls.
+        &#34;&#34;&#34;
+
+        link = {&#34;next&#34;: None, &#34;prev&#34;: None}
+        if LINK_HEADER in headers:
+            results = self._regex_link.findall(headers[LINK_HEADER])
+            for result in results:
+                link[result[1]] = result[0]
+        return RestLink(**link)
+
+    def _rest_rate_limit_required(self) -&gt; Union[bool, int]:
+        &#34;&#34;&#34;
+        Determines if rate limiting is required.
+
+        First, we check the number of requests. If they&#39;re below the limit, we allow it.
+
+        Next, we check if the number of requests happened within a &#34;window of time&#34;.
+        A &#34;window of time&#34; is the first request time, plus 1 second.
+
+        If the request is inside the window, we must sleep the difference.
+        If the request is outside the window, we allow it and reset the request times.
+        &#34;&#34;&#34;
+
+        all_time = self.options.time_store.all(self.session)
+        if len(all_time) &lt; self.options.rest_limit:
+            # Number of requests is below the limit, no limiting required
+            return False
+
+        # We&#39;ve reached the limit, lets see if the request happened within or outside the window of time
+        current_time = self.options.deferrer.current_time()
+        window_time = all_time[0] + ONE_SECOND
+
+        # Reset the request times, return result... False = no limiting, else limit for X ms
+        self.options.time_store.reset(self.session)
+        return False if current_time &gt; window_time else window_time - current_time
+
+    def _graphql_cost_limit_required(self) -&gt; Union[bool, int]:
+        &#34;&#34;&#34;
+        Determine if cost limiting is required.
+
+        First we check if the number of requests is empty or the costs are empty.
+        If they are, we allow the request to continue as normal.
+
+        Next, we compare the last request time and current time.
+        If its over 1 second, we allow it through without limiting.
+        If its under 1 second, we check the cost of the query to determine if its over the limit.
+        If its over the limit, we sleep the difference in ms.
+        If its under the limit, we allow it through without limiting.
+
+        In both cases, request times and costing is reset.
+        &#34;&#34;&#34;
+
+        all_time = self.options.time_store.all(self.session)
+        all_cost = self.options.cost_store.all(self.session)
+        if len(all_time) == 0 or len(all_cost) == 0:
+            # Nothing was done to warrant checking
+            return False
+
+        # Determine time difference between last request and current
+        last_time, last_cost = all_time[-1], all_cost[-1]
+        time_diff = self.options.deferrer.current_time() - last_time
+        points_per_sec = self.options.graphql_limit
+
+        # Reset request times and costing, return if sleeping should happen or not
+        self.options.time_store.reset(self.session)
+        self.options.cost_store.reset(self.session)
+        return False if time_diff &gt; ONE_SECOND or last_cost &lt; points_per_sec else ONE_SECOND - time_diff
+
+    def _cost_update(self, body: ParsedBody) -&gt; None:
+        &#34;&#34;&#34;
+        Read the body and grab the &#34;actualQueryCost&#34; to use for cost limiting.
+        &#34;&#34;&#34;
+
+        if &#34;extensions&#34; not in body:
+            return
+        self.options.cost_store.append(self.session, int(body[&#34;extensions&#34;][&#34;cost&#34;][&#34;actualQueryCost&#34;]))
+
+    def _parse_response(self, api: str, response: Response, retries: int) -&gt; Union[ApiResult, RestResult]:
+        &#34;&#34;&#34;
+        Get the response from HTTPX and parse it for a JSON body and errors.
+        &#34;&#34;&#34;
+
+        try:
+            # Try to decode the JSON
+            errors = None
+            body = response.json()
+            if &#34;errors&#34; in body or &#34;error&#34; in body:
+                # JSON body has an &#34;error&#34; or &#34;errors&#34; key, grab it, kill the body
+                errors = body.get(&#34;errors&#34;, body.get(&#34;error&#34;, None))
+                body = None
+        except Exception as e:
+            # Error decoding for some reason, get the exception and kill the body
+            errors = e
+            body = None
+
+        # Return the HTTPX response, HTTP status code, JSON body, errors body/exception, and number of retires
+        kwargs = {
+            &#34;response&#34;: response,
+            &#34;status&#34;: response.status_code,
+            &#34;body&#34;: body,
+            &#34;errors&#34;: errors,
+            &#34;retries&#34;: retries,
+        }
+        if api == REST:
+            # Include &#34;link&#34; for REST calls
+            return RestResult(
+                link=self._rest_extract_link(response.headers),
+                **kwargs,
+            )
+        return ApiResult(**kwargs)
+
+    def _retry_required(self, response: Response, retries: int) -&gt; Union[bool, float]:
+        &#34;&#34;&#34;
+        Determine if a retry of the request is required.
+        &#34;&#34;&#34;
+
+        if response.status_code in self.options.retry_on_status and retries &lt; self.options.max_retries:
+            # Status code is within the checks
+            if RETRY_HEADER in response.headers:
+                # Use retry header timer since is available to use
+                return float(response.headers[RETRY_HEADER]) * ONE_SECOND
+            return 0.0
+        return False</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="basic_shopify_api.clients.common.ApiCommon"><code class="flex name class">
+<span>class <span class="ident">ApiCommon</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A common class shared between all clients to help prevent duplicated
+code between sync and async.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ApiCommon:
+    &#34;&#34;&#34;
+    A common class shared between all clients to help prevent duplicated
+    code between sync and async.
+    &#34;&#34;&#34;
+
+    @property
+    def _regex_not_authable(self) -&gt; Pattern:
+        &#34;&#34;&#34;
+        Compile NOT_AUTHABLE_PATTERN once.
+        &#34;&#34;&#34;
+
+        return re.compile(NOT_AUTHABLE_PATTERN)
+
+    @property
+    def _regex_not_versionable(self) -&gt; Pattern:
+        &#34;&#34;&#34;
+        Compile NOT_VERSIONABLE_PATH once.
+        &#34;&#34;&#34;
+
+        return re.compile(NOT_VERSIONABLE_PATTERN)
+
+    @property
+    def _regex_link(self) -&gt; Pattern:
+        &#34;&#34;&#34;
+        Compile LINK_PATTERN once.
+        &#34;&#34;&#34;
+
+        return re.compile(LINK_PATTERN)
+
+    def is_authable(self, path: str) -&gt; bool:
+        &#34;&#34;&#34;
+        Determine if the path need authentication.
+
+        Args:
+            path: The URL path.
+        &#34;&#34;&#34;
+
+        return not bool(self._regex_not_authable.match(path))
+
+    def is_versionable(self, path: str) -&gt; bool:
+        &#34;&#34;&#34;
+        Determine if the path needs API version.
+
+        Args:
+            path: The URL path.
+        &#34;&#34;&#34;
+
+        return not bool(self._regex_not_versionable.match(path))
+
+    def replace_path(self, path: str) -&gt; str:
+        &#34;&#34;&#34;
+        Adds versioning to the path.
+
+        Args:
+            path: The URL path.
+        &#34;&#34;&#34;
+
+        return path.replace(&#34;/api&#34;, f&#34;/api/{self.options.version}&#34;)
+
+    def version_path(self, path: str, ignore_check: bool = False) -&gt; str:
+        &#34;&#34;&#34;
+        Determines if the path needs to be versioned.
+
+        Args:
+            path: The URL path.
+            ignore_check: Ignore checks if version is required, simply replace it anyways.
+        &#34;&#34;&#34;
+
+        if ignore_check:
+            return self.replace_path(path)
+
+        ignore_versioning = (
+            not self.is_authable(path) or
+            not self.is_versionable(path) or
+            self.options.version in path
+        )
+        return path if ignore_versioning else self.replace_path(path)
+
+    def _build_headers(self, headers: HeaderTypes) -&gt; HeaderTypes:
+        &#34;&#34;&#34;
+        Build headers to send with the request.
+        Combines headers defined in options with inputted headers.
+        Also will add in ACCESS_TOKEN_HEADER if the API call is private.
+
+        Args:
+            headers: Dict of headers to add to the request.
+        &#34;&#34;&#34;
+
+        if self.options.is_private:
+            headers = {ACCESS_TOKEN_HEADER: self.session.password, **headers}
+        return {**self.options.headers, **headers}
+
+    def _build_request(
+        self,
+        method: str,
+        path: str,
+        params: UnionRequestData = {},
+        headers: HeaderTypes = {}
+    ) -&gt; dict:
+        &#34;&#34;&#34;
+        Builds a request based on the method of request (GET/POST).
+        &#34;&#34;&#34;
+
+        kwargs = {
+            &#34;url&#34;: self.version_path(path),
+            &#34;headers&#34;: self._build_headers(headers),
+        }
+        if method == &#34;get&#34;:
+            # GET, send as query
+            kwargs[&#34;params&#34;] = params
+        else:
+            # POST, send as JSON
+            kwargs[&#34;json&#34;] = params
+        return kwargs
+
+    def _rest_extract_link(self, headers: HeaderTypes) -&gt; RestLink:
+        &#34;&#34;&#34;
+        REST responses, if paginated, will contain a header which will
+        contain a string (pageinfo) for the next and previous calls.
+        &#34;&#34;&#34;
+
+        link = {&#34;next&#34;: None, &#34;prev&#34;: None}
+        if LINK_HEADER in headers:
+            results = self._regex_link.findall(headers[LINK_HEADER])
+            for result in results:
+                link[result[1]] = result[0]
+        return RestLink(**link)
+
+    def _rest_rate_limit_required(self) -&gt; Union[bool, int]:
+        &#34;&#34;&#34;
+        Determines if rate limiting is required.
+
+        First, we check the number of requests. If they&#39;re below the limit, we allow it.
+
+        Next, we check if the number of requests happened within a &#34;window of time&#34;.
+        A &#34;window of time&#34; is the first request time, plus 1 second.
+
+        If the request is inside the window, we must sleep the difference.
+        If the request is outside the window, we allow it and reset the request times.
+        &#34;&#34;&#34;
+
+        all_time = self.options.time_store.all(self.session)
+        if len(all_time) &lt; self.options.rest_limit:
+            # Number of requests is below the limit, no limiting required
+            return False
+
+        # We&#39;ve reached the limit, lets see if the request happened within or outside the window of time
+        current_time = self.options.deferrer.current_time()
+        window_time = all_time[0] + ONE_SECOND
+
+        # Reset the request times, return result... False = no limiting, else limit for X ms
+        self.options.time_store.reset(self.session)
+        return False if current_time &gt; window_time else window_time - current_time
+
+    def _graphql_cost_limit_required(self) -&gt; Union[bool, int]:
+        &#34;&#34;&#34;
+        Determine if cost limiting is required.
+
+        First we check if the number of requests is empty or the costs are empty.
+        If they are, we allow the request to continue as normal.
+
+        Next, we compare the last request time and current time.
+        If its over 1 second, we allow it through without limiting.
+        If its under 1 second, we check the cost of the query to determine if its over the limit.
+        If its over the limit, we sleep the difference in ms.
+        If its under the limit, we allow it through without limiting.
+
+        In both cases, request times and costing is reset.
+        &#34;&#34;&#34;
+
+        all_time = self.options.time_store.all(self.session)
+        all_cost = self.options.cost_store.all(self.session)
+        if len(all_time) == 0 or len(all_cost) == 0:
+            # Nothing was done to warrant checking
+            return False
+
+        # Determine time difference between last request and current
+        last_time, last_cost = all_time[-1], all_cost[-1]
+        time_diff = self.options.deferrer.current_time() - last_time
+        points_per_sec = self.options.graphql_limit
+
+        # Reset request times and costing, return if sleeping should happen or not
+        self.options.time_store.reset(self.session)
+        self.options.cost_store.reset(self.session)
+        return False if time_diff &gt; ONE_SECOND or last_cost &lt; points_per_sec else ONE_SECOND - time_diff
+
+    def _cost_update(self, body: ParsedBody) -&gt; None:
+        &#34;&#34;&#34;
+        Read the body and grab the &#34;actualQueryCost&#34; to use for cost limiting.
+        &#34;&#34;&#34;
+
+        if &#34;extensions&#34; not in body:
+            return
+        self.options.cost_store.append(self.session, int(body[&#34;extensions&#34;][&#34;cost&#34;][&#34;actualQueryCost&#34;]))
+
+    def _parse_response(self, api: str, response: Response, retries: int) -&gt; Union[ApiResult, RestResult]:
+        &#34;&#34;&#34;
+        Get the response from HTTPX and parse it for a JSON body and errors.
+        &#34;&#34;&#34;
+
+        try:
+            # Try to decode the JSON
+            errors = None
+            body = response.json()
+            if &#34;errors&#34; in body or &#34;error&#34; in body:
+                # JSON body has an &#34;error&#34; or &#34;errors&#34; key, grab it, kill the body
+                errors = body.get(&#34;errors&#34;, body.get(&#34;error&#34;, None))
+                body = None
+        except Exception as e:
+            # Error decoding for some reason, get the exception and kill the body
+            errors = e
+            body = None
+
+        # Return the HTTPX response, HTTP status code, JSON body, errors body/exception, and number of retires
+        kwargs = {
+            &#34;response&#34;: response,
+            &#34;status&#34;: response.status_code,
+            &#34;body&#34;: body,
+            &#34;errors&#34;: errors,
+            &#34;retries&#34;: retries,
+        }
+        if api == REST:
+            # Include &#34;link&#34; for REST calls
+            return RestResult(
+                link=self._rest_extract_link(response.headers),
+                **kwargs,
+            )
+        return ApiResult(**kwargs)
+
+    def _retry_required(self, response: Response, retries: int) -&gt; Union[bool, float]:
+        &#34;&#34;&#34;
+        Determine if a retry of the request is required.
+        &#34;&#34;&#34;
+
+        if response.status_code in self.options.retry_on_status and retries &lt; self.options.max_retries:
+            # Status code is within the checks
+            if RETRY_HEADER in response.headers:
+                # Use retry header timer since is available to use
+                return float(response.headers[RETRY_HEADER]) * ONE_SECOND
+            return 0.0
+        return False</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="basic_shopify_api.clients.async_client.AsyncClient" href="async_client.html#basic_shopify_api.clients.async_client.AsyncClient">AsyncClient</a></li>
+<li><a title="basic_shopify_api.clients.client.Client" href="client.html#basic_shopify_api.clients.client.Client">Client</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="basic_shopify_api.clients.common.ApiCommon.is_authable"><code class="name flex">
+<span>def <span class="ident">is_authable</span></span>(<span>self, path: str) -> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Determine if the path need authentication.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong></dt>
+<dd>The URL path.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_authable(self, path: str) -&gt; bool:
+    &#34;&#34;&#34;
+    Determine if the path need authentication.
+
+    Args:
+        path: The URL path.
+    &#34;&#34;&#34;
+
+    return not bool(self._regex_not_authable.match(path))</code></pre>
+</details>
+</dd>
+<dt id="basic_shopify_api.clients.common.ApiCommon.is_versionable"><code class="name flex">
+<span>def <span class="ident">is_versionable</span></span>(<span>self, path: str) -> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Determine if the path needs API version.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong></dt>
+<dd>The URL path.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_versionable(self, path: str) -&gt; bool:
+    &#34;&#34;&#34;
+    Determine if the path needs API version.
+
+    Args:
+        path: The URL path.
+    &#34;&#34;&#34;
+
+    return not bool(self._regex_not_versionable.match(path))</code></pre>
+</details>
+</dd>
+<dt id="basic_shopify_api.clients.common.ApiCommon.replace_path"><code class="name flex">
+<span>def <span class="ident">replace_path</span></span>(<span>self, path: str) -> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Adds versioning to the path.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong></dt>
+<dd>The URL path.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def replace_path(self, path: str) -&gt; str:
+    &#34;&#34;&#34;
+    Adds versioning to the path.
+
+    Args:
+        path: The URL path.
+    &#34;&#34;&#34;
+
+    return path.replace(&#34;/api&#34;, f&#34;/api/{self.options.version}&#34;)</code></pre>
+</details>
+</dd>
+<dt id="basic_shopify_api.clients.common.ApiCommon.version_path"><code class="name flex">
+<span>def <span class="ident">version_path</span></span>(<span>self, path: str, ignore_check: bool = False) -> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Determines if the path needs to be versioned.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong></dt>
+<dd>The URL path.</dd>
+<dt><strong><code>ignore_check</code></strong></dt>
+<dd>Ignore checks if version is required, simply replace it anyways.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def version_path(self, path: str, ignore_check: bool = False) -&gt; str:
+    &#34;&#34;&#34;
+    Determines if the path needs to be versioned.
+
+    Args:
+        path: The URL path.
+        ignore_check: Ignore checks if version is required, simply replace it anyways.
+    &#34;&#34;&#34;
+
+    if ignore_check:
+        return self.replace_path(path)
+
+    ignore_versioning = (
+        not self.is_authable(path) or
+        not self.is_versionable(path) or
+        self.options.version in path
+    )
+    return path if ignore_versioning else self.replace_path(path)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="basic_shopify_api.clients" href="index.html">basic_shopify_api.clients</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="basic_shopify_api.clients.common.ApiCommon" href="#basic_shopify_api.clients.common.ApiCommon">ApiCommon</a></code></h4>
+<ul class="">
+<li><code><a title="basic_shopify_api.clients.common.ApiCommon.is_authable" href="#basic_shopify_api.clients.common.ApiCommon.is_authable">is_authable</a></code></li>
+<li><code><a title="basic_shopify_api.clients.common.ApiCommon.is_versionable" href="#basic_shopify_api.clients.common.ApiCommon.is_versionable">is_versionable</a></code></li>
+<li><code><a title="basic_shopify_api.clients.common.ApiCommon.replace_path" href="#basic_shopify_api.clients.common.ApiCommon.replace_path">replace_path</a></code></li>
+<li><code><a title="basic_shopify_api.clients.common.ApiCommon.version_path" href="#basic_shopify_api.clients.common.ApiCommon.version_path">version_path</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
