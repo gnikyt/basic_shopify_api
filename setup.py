@@ -1,5 +1,5 @@
 from os.path import abspath, dirname, join
-from setuptools import setup
+from setuptools import setup, find_packages
 
 NAME = "basic_shopify_api"
 exec(open("basic_shopify_api/__version__.py").read())
@@ -23,7 +23,7 @@ setup(
     author="osiset",
     author_email="tyler@osiset.com",
     url="https://github.com/osiset/basic_shopify_api",
-    packages=["basic_shopify_api"],
+    packages=find_packages(exclude=['tests']),
     license="MIT License",
     install_requires=[
         "httpx>=0.13"
