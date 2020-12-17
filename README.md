@@ -40,7 +40,7 @@ Requires Python 3.
 
 `Options()`.
 
-There's a huge verity of options/configuration to takr advantage of, but all are optional.
+There are a variety of options to take advantage of.
 
 You can simply create a new instance to use all default values if you're using public API mode.
 
