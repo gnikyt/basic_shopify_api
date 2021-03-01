@@ -5,11 +5,11 @@ from basic_shopify_api.constants import ACCESS_TOKEN_HEADER, ALT_MODE
 
 
 def test_build_headers():
-    with Client(*generate_opts_and_sess(ALT_MODE)) as c:
+    with Client(*generate_opts_and_sess()) as c:
         headers = c._build_headers({})
         assert headers[ACCESS_TOKEN_HEADER] == "123"
 
-    with Client(*generate_opts_and_sess()) as c:
+    with Client(*generate_opts_and_sess(ALT_MODE)) as c:
         headers = c._build_headers({})
         assert ACCESS_TOKEN_HEADER not in headers
 

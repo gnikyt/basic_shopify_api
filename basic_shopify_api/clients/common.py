@@ -96,13 +96,13 @@ class ApiCommon:
         """
         Build headers to send with the request.
         Combines headers defined in options with inputted headers.
-        Also will add in ACCESS_TOKEN_HEADER if the API call is private.
+        Also will add in ACCESS_TOKEN_HEADER if the API call is public.
 
         Args:
             headers: Dict of headers to add to the request.
         """
 
-        if self.options.is_private:
+        if self.options.is_public:
             headers = {ACCESS_TOKEN_HEADER: self.session.password, **headers}
         return {**self.options.headers, **headers}
 

@@ -26,6 +26,7 @@ Support for:
 - [GraphQL Usage](#graphql-usage)
 - [Pre/Post Actions](#prepost-actions)
 - [Utilities](#utilities)
+- [Development](#development)
 - [Testing](#testing)
 - [Documentation](#documentation)
 - [License](#license)
@@ -271,6 +272,12 @@ params = request.json # some method to get a dict of JSON data
 verified = hmac_verify("webhook", "secret key", params, hmac_header)
 print("Verified? {verified}")
 ```
+
+## Development
+
+`python -m venv env && source env/bin/activate`
+
+`python -m pip install -r requirements.txt`
 
 ## Testing
 
