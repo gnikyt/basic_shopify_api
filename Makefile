@@ -35,7 +35,7 @@ publish:
 	$(PREFIX)twine upload dist/*
 
 docs: clean
-	$(PREFIX)pdoc --html --output-dir docs basic_shopify_api
+	$(PREFIX)pdoc --output-dir docs basic_shopify_api
 	mv docs/basic_shopify_api/* docs/
 	rm -rf docs/basic_shopify_api/
 

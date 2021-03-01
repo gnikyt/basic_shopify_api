@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0
+
+- Update to fix public/private headers
+
 ## 0.1.1
 
 - Fixed setup.py to conver Markdown to RST for PyPi
