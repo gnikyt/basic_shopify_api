@@ -9,7 +9,7 @@ from ..models import RestLink, RestResult, ApiResult
 from ..constants import REST, LINK_HEADER
 from httpx._types import HeaderTypes
 from httpx._models import Response
-from typing import Pattern, Union
+from typing import Pattern, Union, Optional
 import re
 
 
@@ -200,12 +200,12 @@ class ApiCommon:
         self.options.cost_store.reset(self.session)
         return False if time_diff > ONE_SECOND or last_cost < points_per_sec else ONE_SECOND - time_diff
 
-    def _cost_update(self, body: ParsedBody) -> None:
+    def _cost_update(self, body: Optional[ParsedBody]) -> None:
         """
         Read the body and grab the "actualQueryCost" to use for cost limiting.
         """
 
-        if "extensions" not in body:
+        if body is None or "extensions" not in body:
             return
         self.options.cost_store.append(self.session, int(body["extensions"]["cost"]["actualQueryCost"]))
 
