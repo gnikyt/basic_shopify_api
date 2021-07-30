@@ -139,7 +139,7 @@ class ApiCommon:
         if LINK_HEADER in headers:
             results = self._regex_link.findall(headers[LINK_HEADER])
             for result in results:
-                link[result[1]] = result[0]
+                link[result[1][0:4]] = result[0]
         return RestLink(**link)
 
     def _rest_rate_limit_required(self) -> Union[bool, int]:

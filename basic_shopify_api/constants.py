@@ -5,7 +5,7 @@ NOT_AUTHABLE_PATTERN = r"\/oauth\/(authorize|access_token)"
 # /oauth/access_scopes does not require versioned API path
 NOT_VERSIONABLE_PATTERN = r"\/(oauth\/access_scopes)"
 # For extracting next/prev link header on REST API calls
-LINK_PATTERN = r"<.*page_info=([a-zA-Z0-9\-_]+).*>; rel=\"(next|previous)\""
+LINK_PATTERN = r"<.*?page_info=([a-zA-Z0-9\-_]+).*?>; rel=\"(next|previous)\""
 # Header supplied by Shopify when rate limit is hit
 RETRY_HEADER = "retry-after"
 # Header supplied by Shopify for REST API calls, used by LINK_PATTERN
