@@ -249,7 +249,7 @@ from basic_shopify_api.utils import hmac_verify
 
 params = request.args # some method to get a dict of query params
 verified = hmac_verify("standard", "secret key", params)
-print("Verified? {verified}")
+print(f"Verified? {verified}")
 ```
 
 ### Proxy
@@ -259,7 +259,7 @@ from basic_shopify_api.utils import hmac_verify
 
 params = request.args # some method to get a dict of query params
 verified = hmac_verify("proxy", "secret key", params)
-print("Verified? {verified}")
+print(f"Verified? {verified}")
 ```
 
 ### Webhook
@@ -268,9 +268,9 @@ print("Verified? {verified}")
 from basic_shopify_api.utils import hmac_verify
 
 hmac_header = request.headers.get("x-shopify-hmac-sha256") # some method to get the HMAC header
-params = request.json # some method to get a dict of JSON data
+params = request.get_data(as_text=True) # some method to get a JSON str of request data
 verified = hmac_verify("webhook", "secret key", params, hmac_header)
-print("Verified? {verified}")
+print(f"Verified? {verified}")
 ```
 
 ## Development
