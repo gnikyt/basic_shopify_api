@@ -3,7 +3,7 @@ import os
 from http import HTTPStatus
 from multiprocessing import Process
 from wsgiref.simple_server import make_server
-from basic_shopify_api.constants import RETRY_HEADER
+from fastshopifyapi.constants import RETRY_HEADER
 
 
 def local_server_app(environ, start_response):

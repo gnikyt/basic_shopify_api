@@ -1,7 +1,7 @@
 import pytest
 from .utils import generate_opts_and_sess
-from basic_shopify_api import Client
-from basic_shopify_api.constants import ACCESS_TOKEN_HEADER, ALT_MODE
+from fastshopifyapi import Client
+from fastshopifyapi.constants import ACCESS_TOKEN_HEADER, ALT_MODE
 
 
 def test_build_headers():

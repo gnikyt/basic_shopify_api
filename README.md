@@ -1,10 +1,15 @@
-# basic_shopify_api
+# FastShopifyApi
 
-![Tests](https://github.com/osiset/basic_shopify_api/workflows/Package%20Test/badge.svg?branch=master)
+![Tests](https://github.com/sokoslee/FastShopifyApi/workflows/Package%20Test/badge.svg?branch=master)
 [![Coverage](https://coveralls.io/repos/github/osiset/basic_shopify_api/badge.svg?branch=master)](https://coveralls.io/github/osiset/basic_shopify_api?branch=master)
-[![PyPi version](https://badge.fury.io/py/basic-shopify-api.svg)](https://pypi.org/project/basic-shopify-api)
+[![PyPi version](https://badge.fury.io/py/basic-shopify-api.svg)](https://pypi.org/project/fastshopifyapi/)
 
 This library extends HTTPX and implements a read-to-use sync/async client for REST and GraphQL API calls to Shopify's API.
+
+Fork from [osiset/basic_shopify_api](https://github.com/gnikyt/basic_shopify_api) with the following changes:
+- Rename `basic_shopify_api` to `FastShopifyApi`
+- Upgrade Shopify API version
+- Fixed some bugs
 
 Support for:
 
@@ -33,7 +38,7 @@ Support for:
 
 ## Installation
 
-`$ pip install basic-shopify-api`
+`$ pip install fastshopifyapi`
 
 Requires Python 3.
 
@@ -91,7 +96,8 @@ For private access, you will need to fill in:
 Example:
 
 ```python
-from basic_shopify_api import Session
+from fastshopifyapi import Session
+
 session = Session(domain="john-doe.myshopify.com", key="abc", password="123")
 ```
 
@@ -109,7 +115,7 @@ session = Session(domain="john-doe.myshopify.com", key="abc", password="123")
 Example:
 
 ```python
-from basic_shopify_api import Client
+from fastshopifyapi import Client
 
 with Client(sess, opts) as client:
     shop = client.rest("get", "/admin/api/shop.json", {"fields": "name,email"})
@@ -132,7 +138,7 @@ with Client(sess, opts) as client:
 Example:
 
 ```python
-from basic_shopify_api import AsyncClient
+from fastshopifyapi import AsyncClient
 
 # ...
 
@@ -164,7 +170,7 @@ async with AsyncClient(sess, opts) as client:
 Example:
 
 ```python
-from basic_shopify_api import Client
+from fastshopifyapi import Client
 
 # ...
 
@@ -188,7 +194,7 @@ with Client(sess, opts) as client:
 Example:
 
 ```python
-from basic_shopify_api import AsyncClient
+from fastshopifyapi import AsyncClient
 
 # ...
 
@@ -213,11 +219,13 @@ async with AsyncClient(sess, opts) as client:
 To register a pre or post action for REST or GraphQL, simply append it to your options setup.
 
 ```python
-from basic_shopify_api import Options, Client
+from fastshopifyapi import Options, Client
+
 
 def say_hello(inst):
     """inst is the current client instance, either Client or AsyncClient"""
     print("hello")
+
 
 def say_world(inst, result):
     """
@@ -225,6 +233,7 @@ def say_world(inst, result):
     result is either RestResult or GraphQLResult object.
     """
     print("world")
+
 
 opts = Options()
 opts.rest_pre_actions = [say_hello]
@@ -245,9 +254,9 @@ This will be expanding, but as of now there are utilities to help verify HMAC fo
 ### 0Auth/URL
 
 ```python
-from basic_shopify_api.utils import hmac_verify
+from fastshopifyapi.utils import hmac_verify
 
-params = request.args # some method to get a dict of query params
+params = request.args  # some method to get a dict of query params
 verified = hmac_verify("standard", "secret key", params)
 print(f"Verified? {verified}")
 ```
@@ -255,9 +264,9 @@ print(f"Verified? {verified}")
 ### Proxy
 
 ```python
-from basic_shopify_api.utils import hmac_verify
+from fastshopifyapi.utils import hmac_verify
 
-params = request.args # some method to get a dict of query params
+params = request.args  # some method to get a dict of query params
 verified = hmac_verify("proxy", "secret key", params)
 print(f"Verified? {verified}")
 ```
@@ -265,10 +274,10 @@ print(f"Verified? {verified}")
 ### Webhook
 
 ```python
-from basic_shopify_api.utils import hmac_verify
+from fastshopifyapi.utils import hmac_verify
 
-hmac_header = request.headers.get("x-shopify-hmac-sha256") # some method to get the HMAC header
-params = request.get_data(as_text=True) # some method to get a JSON str of request data
+hmac_header = request.headers.get("x-shopify-hmac-sha256")  # some method to get the HMAC header
+params = request.get_data(as_text=True)  # some method to get a JSON str of request data
 verified = hmac_verify("webhook", "secret key", params, hmac_header)
 print(f"Verified? {verified}")
 ```

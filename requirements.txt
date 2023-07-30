@@ -1,7 +1,7 @@
 -e .
 
 # Requirements
-httpx>=0.13
+httpx >= 0.24.1
 
 # Testing
 pytest

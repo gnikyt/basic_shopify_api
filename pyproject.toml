@@ -1,0 +1,23 @@
+[project]
+name = "fastshopifyapi"
+version = "2.0.0"
+authors = [
+  { name="Tyler King", email="tyler@osiset.com" },
+  { name="Sokos Lee", email="SokosLee@gmail.com" }
+]
+description = "A read-to-use sync/async client for REST and GraphQL API calls to Shopify's API"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    'License :: OSI Approved :: MIT License',
+
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3 :: Only',
+]
+
+[project.urls]
+"Homepage" = "https://github.com/sokoslee/FastShopifyApi"
+"Bug Tracker" = "https://github.com/sokoslee/FastShopifyApi/issues"

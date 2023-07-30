@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.0
+* Rename `basic_shopify_api` to `FastShopifyApi`
+
 ## 1.0.1
 
 * Updated GraphQL to account for empty body in response

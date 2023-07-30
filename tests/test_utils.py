@@ -1,5 +1,5 @@
 import pytest
-from basic_shopify_api.utils import hmac_verify
+from fastshopifyapi.utils import hmac_verify
 
 
 def test_hmac_verify_oauth():

@@ -1,5 +1,5 @@
 import pytest
-from basic_shopify_api import Options
+from fastshopifyapi import Options
 
 
 def test_options_version():

@@ -16,7 +16,7 @@ test: clean
 	$(PREFIX)pytest
 
 cover: clean
-	$(PREFIX)coverage run --source basic_shopify_api/ -m pytest
+	$(PREFIX)coverage run --source fastshopifyapi/ -m pytest
 	$(PREFIX)coverage report -m
 
 cover-html: cover
@@ -35,8 +35,8 @@ publish:
 	$(PREFIX)twine upload dist/*
 
 docs: clean
-	$(PREFIX)pdoc --output-dir docs basic_shopify_api
-	mv docs/basic_shopify_api/* docs/
-	rm -rf docs/basic_shopify_api/
+	$(PREFIX)pdoc --output-dir docs fastshopifyapi
+	mv docs/fastshopifyapi/* docs/
+	rm -rf docs/fastshopifyapi/
 
 release: build verify docs publish

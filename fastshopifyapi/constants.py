@@ -13,7 +13,7 @@ LINK_HEADER = "link"
 # Header to send for public API calls
 ACCESS_TOKEN_HEADER = "x-shopify-access-token"
 # Default API version
-DEFAULT_VERSION = "2020-04"
+DEFAULT_VERSION = "2023-07"
 # Default API mode
 DEFAULT_MODE = "public"
 # Alternate API mode
